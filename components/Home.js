@@ -1,19 +1,23 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
+//import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, Component} from 'react-native';
 
-
-const HomePage = ({navigation}) =>{
+export default class HomePage extends React.Component{
+  render(){
+//const HomePage = ({navigation}) =>{
     return(
     <SafeAreaView style={styles.container}>
       <Text style={styles.areaTitles}>Rounds</Text>
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity style={styles.loginBtn}
+      onPress={() => this.props.navigation.navigate('PastRounds')}>
         <Text style={styles.loginBtnTxt}>View Past Rounds</Text>
       </TouchableOpacity>
       <TouchableOpacity 
       style={styles.loginBtn}  
-      onPress={() => navigation.navigate('AddRound')}>
+      onPress={() => this.props.navigation.navigate('AddRound')}
+      >
         <Text style={styles.loginBtnTxt}>Add New Round</Text>
       </TouchableOpacity>
       <Text style={styles.areaTitles}>Profile</Text>
@@ -27,6 +31,7 @@ const HomePage = ({navigation}) =>{
     </SafeAreaView>
     )
   }
+}
 
 
 const styles = StyleSheet.create({
@@ -59,4 +64,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomePage;
+//export default HomePage;

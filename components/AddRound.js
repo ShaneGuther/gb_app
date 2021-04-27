@@ -1,41 +1,75 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
-import firebase from 'firebase/app';
-import firestore from 'firebase/firestore'
-//import { getRound } from '../api/RoundApi';
-//import firestore from 'react-native-firebase/firestore'
-//import {} from "./api/RoundApi";
-
-// state ={
-//   roundList: [],
-//   currentRound: null
-// }
-
-// onRoundA
-var test = "test";
-//console.log(pastRound);
-//console.log("test");
-async function getRound(){
-  const pastRound = await firestore().collection("rounds").doc
-("46865sn3omOBLZhec9bi").get();
-}
-//test = getRound();
-console.log("test")
-console.log(getRound());
+import React, { Component } from 'react';
+import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, DatePickerAndroid, StatusBarIOS, TouchableNativeFeedbackBase, Keyboard} from 'react-native';
+import firebase from '../api/firebaseConfig';
+import Animated from 'react-native-reanimated';
 
 
 
 
+export default class AddRound extends Component{
+    constructor(){
+      super();
+      this.dbRef = firebase.firestore().collection('rounds');
+      this.state = {
+        course:'',
+        fairways: '',
+        fwh: '',
+        gir: '',
+        greens: '',
+        par: '',
+        score: '',
+        weather: '',
+      };
+    }
 
-// const getRound = async() =>{
-//   const pastRound = await firestore().collection("rounds").doc
-// ("46865sn3omOBLZhec9bi").get();
-// console.log(pastRound);
-// console.log("test");
-// }
 
-const AddRound = ({navigation})=>{
+    inputValueUpdate = (val, prop) =>{
+      const state = this.state;
+      state[prop] = val;
+      this.setState(state);
+    }
+
+    storeRound(){
+      if(this.state.course === '' || this.state.par === '' || this.state.score === ''){
+        alert("Course name, par and score are required!");
+      }else{
+        this.setState({
+          isLoading: true,
+        });
+      this.dbRef.add({
+        course: this.state.course,
+        fairways: this.state.fairways,
+        fwh: this.state.fwh,
+        gir: this.state.gir,
+        greens: this.state.greens,
+        par: this.state.par,
+        score: this.state.score,
+        weather: this.state.weather,
+        isLoading: false,
+      }).then((res) => {
+        this.setState({
+        course:'',
+        fairways: '',
+        fwh: '',
+        gir: '',
+        greens: '',
+        par: '',
+        score: '',
+        weather: '',
+        });
+        this.props.navigation.navigate('')
+      }).catch((err) =>{
+        console.log("error", err);
+        this.setState({
+          isLoading: false,
+        });
+      });
+    }
+  }
+
+  
+  render(){
     return(
       <SafeAreaView style={styles.container}>
         <View style={styles.imageView}>
@@ -48,67 +82,100 @@ const AddRound = ({navigation})=>{
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Course Name</Text>
                 <View style={styles.inputTextView}>
-                <TextInput styles={styles.inputTextLgn} placeholder="test"></TextInput>
+                <TextInput 
+                styles={styles.inputTextLgn}
+                value={this.state.course}
+                onChangeText={(val) => this.inputValueUpdate(val, 'course')}
+                />
                 </View>
             </View>
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Course Par</Text>
                 <View style={styles.inputTextView}>
-                <TextInput styles={styles.inputTextLgn}  keyboardType= 'numeric'></TextInput>
+                <TextInput 
+                styles={styles.inputTextLgn}  
+                //keyboardType= 'numeric'
+                value={this.state.par}
+                onChangeText={(val) => this.inputValueUpdate(val, 'par')}
+                />
                 </View>
             </View>
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Score</Text>
                 <View style={styles.inputTextView}>
-                <TextInput styles={styles.inputTextLgn}
-                 keyboardType= 'numeric'></TextInput>
+                <TextInput 
+                styles={styles.inputTextLgn}
+                //keyboardType='numeric'
+                value={this.state.score}
+                onChangeText={(val) => this.inputValueUpdate(val, 'score')}
+                 />
                 </View>
             </View>
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Greens in Regulation*</Text>
                 <View style={styles.inputTextViewGIR}>
-                    <TextInput styles={styles.inputTextLgn}
-                    keyboardType= 'numeric'></TextInput>
+                    <TextInput 
+                    styles={styles.inputTextLgn}
+                    //keyboardType= 'numeric'
+                    value={this.state.gir}
+                    onChangeText={(val) => this.inputValueUpdate(val, 'gir')}
+                    />
                 </View>
                 <Text style={styles.textLabelGIR}>/</Text>
                 <View style={styles.inputTextViewGIR}>
-                    <TextInput styles={styles.inputTextLgn}
-                    keyboardType= 'numeric'></TextInput>
+                    <TextInput 
+                    styles={styles.inputTextLgn}
+                    //keyboardType= 'numeric'
+                    value={this.state.greens}
+                    onChangeText={(val) => this.inputValueUpdate(val, 'greens')}
+                    />
                 </View>
-
             </View>
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Fairways Hit*</Text>
                 <View style={styles.inputTextViewGIR}>
-                    <TextInput styles={styles.inputTextLgn}
-                    keyboardType= 'numeric'></TextInput>
+                    <TextInput 
+                    styles={styles.inputTextLgn}
+                    //keyboardType= 'numeric'
+                    value={this.state.fwh}
+                    onChangeText={(val) => this.inputValueUpdate(val, 'fwh')}
+                    />
                 </View>
                 <Text style={styles.textLabelGIR}>/</Text>
                 <View style={styles.inputTextViewGIR}>
-                    <TextInput styles={styles.inputTextLgn}
-                    keyboardType= 'numeric'></TextInput>
+                    <TextInput 
+                    styles={styles.inputTextLgn}
+                    //keyboardType= 'numeric'
+                    value={this.state.fairways}
+                    onChangeText={(val) => this.inputValueUpdate(val, 'fairways')}
+                    />
                 </View>
             </View>
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Weather*</Text>
                 <View style={styles.inputTextView}>
-                <TextInput styles={styles.inputTextLgn}></TextInput>
+                <TextInput 
+                styles={styles.inputTextLgn}
+                value={this.state.weather}
+                onChangeText={(val) => this.inputValueUpdate(val, 'weather')}
+                ></TextInput>
                 </View>
             </View>
             <View style={styles.inputButtonView}>
-                <TouchableOpacity style={styles.loginBtn}>
+                <TouchableOpacity 
+                style={styles.loginBtn}
+                onPress={() => this.storeRound()}
+                onPress={() => this.props.navigation.navigate('Home')}
+                >
                     <Text style={styles.loginBtnTxt}>Add Round</Text>
                 </TouchableOpacity>
             </View>
         </View>
-        
-        
-            
-
       </SafeAreaView>
   
     );
   }
+}
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -212,6 +279,3 @@ const AddRound = ({navigation})=>{
 
   });
   
-
-  export default AddRound;
-

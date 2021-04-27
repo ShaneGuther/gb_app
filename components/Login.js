@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
 
 
-
 const Login = ({navigation}) => {
     return(
     <SafeAreaView style={styles.container}>

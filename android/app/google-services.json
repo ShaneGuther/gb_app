@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "234647605827",
+    "firebase_url": "https://golfbuddy-6ffcc-default-rtdb.firebaseio.com",
+    "project_id": "golfbuddy-6ffcc",
+    "storage_bucket": "golfbuddy-6ffcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234647605827:android:355d575bd5a7d5f1bbbaf6",
+        "android_client_info": {
+          "package_name": "android.pkg.gb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "234647605827-u6evodci79rp3kkj5gtb6ce7a03gi7h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGrdbMVyP5B-B9DPeP_TdTNsTLoXH0aZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "234647605827-u6evodci79rp3kkj5gtb6ce7a03gi7h8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

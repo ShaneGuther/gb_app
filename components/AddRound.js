@@ -1,8 +1,39 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
+import firebase from 'firebase/app';
+import firestore from 'firebase/firestore'
+//import { getRound } from '../api/RoundApi';
+//import firestore from 'react-native-firebase/firestore'
+//import {} from "./api/RoundApi";
+
+// state ={
+//   roundList: [],
+//   currentRound: null
+// }
+
+// onRoundA
+var test = "test";
+//console.log(pastRound);
+//console.log("test");
+async function getRound(){
+  const pastRound = await firestore().collection("rounds").doc
+("46865sn3omOBLZhec9bi").get();
+}
+//test = getRound();
+console.log("test")
+console.log(getRound());
 
 
+
+
+
+// const getRound = async() =>{
+//   const pastRound = await firestore().collection("rounds").doc
+// ("46865sn3omOBLZhec9bi").get();
+// console.log(pastRound);
+// console.log("test");
+// }
 
 const AddRound = ({navigation})=>{
     return(

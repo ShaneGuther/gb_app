@@ -1,15 +1,16 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, DatePickerAndroid, StatusBarIOS, TouchableNativeFeedbackBase, Keyboard} from 'react-native';
+import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, DatePickerAndroid, StatusBarIOS, TouchableNativeFeedbackBase, Keyboard, ScrollView, Alert} from 'react-native';
 import firebase from '../api/firebaseConfig';
 import Animated from 'react-native-reanimated';
 
 
 
 
-export default class AddRound extends Component{
+class AddRound extends Component{
     constructor(){
       super();
+      //this.dbRef = firebase.firestore().collection('rounds');
       this.dbRef = firebase.firestore().collection('rounds');
       this.state = {
         course:'',
@@ -32,12 +33,13 @@ export default class AddRound extends Component{
 
     storeRound(){
       if(this.state.course === '' || this.state.par === '' || this.state.score === ''){
-        alert("Course name, par and score are required!");
+        Alert.alert("Course name, par and score are required!");
+      }else if(this.state.greens > 18 || this.state.gir){
+        Alert.alert('Greens/gir must be less than 18!');
+      }else if(this.state.fairways > 18 || this.state.fwh){
+        Alert.alert('Fairways/fairways hit must be less than 18!');
       }else{
-        this.setState({
-          isLoading: true,
-        });
-      this.dbRef.add({
+        this.dbRef.add({
         course: this.state.course,
         fairways: this.state.fairways,
         fwh: this.state.fwh,
@@ -46,7 +48,7 @@ export default class AddRound extends Component{
         par: this.state.par,
         score: this.state.score,
         weather: this.state.weather,
-        isLoading: false,
+        
       }).then((res) => {
         this.setState({
         course:'',
@@ -58,16 +60,14 @@ export default class AddRound extends Component{
         score: '',
         weather: '',
         });
-        this.props.navigation.navigate('')
+        this.props.navigation.navigate('Home')
+        //this.props.navigation.navigate('PastRounds')
       }).catch((err) =>{
         console.log("error", err);
-        this.setState({
-          isLoading: false,
-        });
       });
+      
     }
   }
-
   
   render(){
     return(
@@ -94,7 +94,7 @@ export default class AddRound extends Component{
                 <View style={styles.inputTextView}>
                 <TextInput 
                 styles={styles.inputTextLgn}  
-                //keyboardType= 'numeric'
+                keyboardType= 'numeric'
                 value={this.state.par}
                 onChangeText={(val) => this.inputValueUpdate(val, 'par')}
                 />
@@ -105,7 +105,7 @@ export default class AddRound extends Component{
                 <View style={styles.inputTextView}>
                 <TextInput 
                 styles={styles.inputTextLgn}
-                //keyboardType='numeric'
+                keyboardType='numeric'
                 value={this.state.score}
                 onChangeText={(val) => this.inputValueUpdate(val, 'score')}
                  />
@@ -116,7 +116,7 @@ export default class AddRound extends Component{
                 <View style={styles.inputTextViewGIR}>
                     <TextInput 
                     styles={styles.inputTextLgn}
-                    //keyboardType= 'numeric'
+                    keyboardType= 'numeric'
                     value={this.state.gir}
                     onChangeText={(val) => this.inputValueUpdate(val, 'gir')}
                     />
@@ -125,7 +125,7 @@ export default class AddRound extends Component{
                 <View style={styles.inputTextViewGIR}>
                     <TextInput 
                     styles={styles.inputTextLgn}
-                    //keyboardType= 'numeric'
+                    keyboardType= 'numeric'
                     value={this.state.greens}
                     onChangeText={(val) => this.inputValueUpdate(val, 'greens')}
                     />
@@ -136,7 +136,7 @@ export default class AddRound extends Component{
                 <View style={styles.inputTextViewGIR}>
                     <TextInput 
                     styles={styles.inputTextLgn}
-                    //keyboardType= 'numeric'
+                    keyboardType= 'numeric'
                     value={this.state.fwh}
                     onChangeText={(val) => this.inputValueUpdate(val, 'fwh')}
                     />
@@ -145,7 +145,7 @@ export default class AddRound extends Component{
                 <View style={styles.inputTextViewGIR}>
                     <TextInput 
                     styles={styles.inputTextLgn}
-                    //keyboardType= 'numeric'
+                    keyboardType= 'numeric'
                     value={this.state.fairways}
                     onChangeText={(val) => this.inputValueUpdate(val, 'fairways')}
                     />
@@ -162,13 +162,13 @@ export default class AddRound extends Component{
                 </View>
             </View>
             <View style={styles.inputButtonView}>
-                <TouchableOpacity 
+                <TouchableOpacity
+                title='Add Round'
                 style={styles.loginBtn}
                 onPress={() => this.storeRound()}
-                onPress={() => this.props.navigation.navigate('Home')}
                 >
                     <Text style={styles.loginBtnTxt}>Add Round</Text>
-                </TouchableOpacity>
+                    </TouchableOpacity>
             </View>
         </View>
       </SafeAreaView>
@@ -279,3 +279,4 @@ export default class AddRound extends Component{
 
   });
   
+  export default AddRound;

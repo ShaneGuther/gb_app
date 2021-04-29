@@ -3,42 +3,42 @@ import React from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
 import {addRound, getRound} from './api/RoundApi'
 
-import firebase from 'firebase/app';
+//import firebase from 'firebase/app';
 import 'firebase/firestore'
-import { firestore } from 'react-native-firebase';
+//import { firestore } from 'react-native-firebase';
 
-state = {
-    roundList: [],
-    currentRound : null
-}
+// state = {
+//     roundList: [],
+//     currentRound : null
+// }
 
 // const pastRound = await firestore().collection("rounds").doc
 // ("46865sn3omOBLZhec9bi").get();
 
-onRoundAdded = (round) => {
-    console.log("round added");
-    console.log(round);
+// onRoundAdded = (round) => {
+//     console.log("round added");
+//     console.log(round);
 
-}
-onRoundReceived =(roundList) => {
-    console.log(roundList);
-    this.setState(prevState => ({
-        roundList: prevState.roundList = roundList
-    }));
-}
+// }
+// onRoundReceived =(roundList) => {
+//     console.log(roundList);
+//     this.setState(prevState => ({
+//         roundList: prevState.roundList = roundList
+//     }));
+// }
 
-componentDidMount= () => {
-    getRound(onRoundReceived)
-}
+// componentDidMount= () => {
+//     getRound(onRoundReceived)
+// }
 
 
 const PastRounds = ({navigation})=>{
     return(
       <SafeAreaView style={styles.container}>
-          <Te
+          {/* <Te
           <Button
           title='Submit'
-          onPress={()=> addRound()}/>
+          onPress={()=> addRound()}/> */}
       </SafeAreaView>
   
     );

@@ -8,7 +8,9 @@ import { color } from 'react-native-reanimated';
 
 import HomePage from './components/Home';
 import Login from './components/Login';
+import PastRounds from './components/PastRounds';
 import AddRound from './components/AddRound';
+import SignUp from './components/SignUp';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,15 @@ export default function App() {
         name="Login" 
         component={Login} 
         options={{headerShown: false}}
+        />
+        <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{title: "Sign Up",
+        headerTintColor:"#009933",
+        headerTitleStyle:{
+          fontSize: 20,
+          fontWeight: "bold"}}}
         />
         <Stack.Screen 
         name="Home" 
@@ -38,6 +49,15 @@ export default function App() {
         headerTitleStyle:{
           fontSize: 20,
           fontWeight: "bold"}}}
+          />
+          <Stack.Screen
+          name="PastRounds"
+          component={PastRounds}
+          options={{title: "Past Rounds",
+          headerTintColor:"#009933",
+          headerTitleStyle:{
+            fontSize: 20,
+            fontWeight: "bold"}}}
           />
       </Stack.Navigator>
 }</NavigationContainer>

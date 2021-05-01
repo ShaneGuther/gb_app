@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
+import { NavigationRouteContext } from '@react-navigation/core';
 
 
 const Login = ({navigation}) => {
@@ -30,7 +31,8 @@ const Login = ({navigation}) => {
             <Text style={styles.loginBtnTxt}
             >LOGIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.signUpText}>Don't have an account?  Sign up!</Text>
           </TouchableOpacity>
       </SafeAreaView>

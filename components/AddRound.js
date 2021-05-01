@@ -1,8 +1,14 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, DatePickerAndroid, StatusBarIOS, TouchableNativeFeedbackBase, Keyboard, ScrollView, Alert} from 'react-native';
+import { Button, StyleSheet, Text, View, SafeAreaView, 
+  Image, Platform, TextInput, TouchableOpacity, 
+  DatePickerAndroid, StatusBarIOS, TouchableNativeFeedbackBase, 
+  ScrollView, Alert, KeyboardAvoidingView, Dimensions, KeyboardAware} from 'react-native';
+  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+  import {Picker} from '@react-native-picker/picker';
 import firebase from '../api/firebaseConfig';
 import Animated from 'react-native-reanimated';
+import RNPickerSelect from 'react-native-picker-select';
 
 
 
@@ -10,7 +16,6 @@ import Animated from 'react-native-reanimated';
 class AddRound extends Component{
     constructor(){
       super();
-      //this.dbRef = firebase.firestore().collection('rounds');
       this.dbRef = firebase.firestore().collection('rounds');
       this.state = {
         course:'',
@@ -24,7 +29,6 @@ class AddRound extends Component{
       };
     }
 
-
     inputValueUpdate = (val, prop) =>{
       const state = this.state;
       state[prop] = val;
@@ -34,9 +38,9 @@ class AddRound extends Component{
     storeRound(){
       if(this.state.course === '' || this.state.par === '' || this.state.score === ''){
         Alert.alert("Course name, par and score are required!");
-      }else if(this.state.greens > 18 || this.state.gir){
+      }else if(this.state.greens > 18 || this.state.gir > 18){
         Alert.alert('Greens/gir must be less than 18!');
-      }else if(this.state.fairways > 18 || this.state.fwh){
+      }else if(this.state.fairways > 18 || this.state.fwh > 18){
         Alert.alert('Fairways/fairways hit must be less than 18!');
       }else{
         this.dbRef.add({
@@ -63,25 +67,29 @@ class AddRound extends Component{
         this.props.navigation.navigate('Home')
         //this.props.navigation.navigate('PastRounds')
       }).catch((err) =>{
-        console.log("error", err);
+        console.log("error: ", err);
       });
-      
     }
   }
   
   render(){
     return(
-      <SafeAreaView style={styles.container}>
-        <View style={styles.imageView}>
+
+      <KeyboardAwareScrollView style={styles.container}>
+       <View style={styles.imageView}>
         <Image 
-        style={{height: 250, width: 250}}
         source={require("../assets/gcexample.png")}
+        style={{height: 200, width: 200}}
         />
         </View>
-        <View style={styles.columnView}>
+        <View style={styles.columnView}
+        resetScrollToCoords={{x:0, y:0}}
+        contentContainerStyle={styles.columnView}
+        scrollEnabled={false}>
+           
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Course Name</Text>
-                <View style={styles.inputTextView}>
+                <View style={styles.inputTextViewCourse}>
                 <TextInput 
                 styles={styles.inputTextLgn}
                 value={this.state.course}
@@ -92,6 +100,29 @@ class AddRound extends Component{
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Course Par</Text>
                 <View style={styles.inputTextView}>
+                <RNPickerSelect
+                style={styles.pickerStyle}
+                placeholder= {{}}
+                onValueChange={(val) => this.inputValueUpdate(val, 'par')}
+                //onValueChange={(value) => console.log(value)}
+                items={[
+                  {label: '68', value: 68, color: 'green'},
+                  {label: '69', value: 69, color: 'green'},
+                  {label: '70', value: 70, color: 'green'},
+                  {label: '71', value: 71, color: 'green'},
+                  {label: '72', value: 72, color: 'green'},
+                  {label: '73', value: 73, color: 'green'},
+                  {label: '74', value: 74, color: 'green'},
+                ]}
+                useNativeAndroidPickerStyle={false}>
+                </RNPickerSelect>
+                  </View>
+            </View>
+
+{/* 
+            <View style={styles.inputView}>
+                <Text style={styles.textLabel}>Course Par</Text>
+                <View style={styles.inputTextView}>
                 <TextInput 
                 styles={styles.inputTextLgn}  
                 keyboardType= 'numeric'
@@ -99,7 +130,9 @@ class AddRound extends Component{
                 onChangeText={(val) => this.inputValueUpdate(val, 'par')}
                 />
                 </View>
-            </View>
+            </View> */}
+
+
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Score</Text>
                 <View style={styles.inputTextView}>
@@ -111,6 +144,7 @@ class AddRound extends Component{
                  />
                 </View>
             </View>
+
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Greens in Regulation*</Text>
                 <View style={styles.inputTextViewGIR}>
@@ -122,14 +156,30 @@ class AddRound extends Component{
                     />
                 </View>
                 <Text style={styles.textLabelGIR}>/</Text>
+                
+                
                 <View style={styles.inputTextViewGIR}>
+                <RNPickerSelect
+                style={styles.pickerStyle}
+                placeholder= {{}}
+                onValueChange={(val) => this.inputValueUpdate(val, 'greens')}
+                //onValueChange={(value) => console.log(value)}
+                items={[
+                  {label: '9', value: 9, color: 'green'},
+                  {label: '18', value: 18, color: 'green'},
+                ]}
+                useNativeAndroidPickerStyle={false}>
+                </RNPickerSelect>
+                  </View>
+            
+                {/* <View style={styles.inputTextViewGIR}>
                     <TextInput 
                     styles={styles.inputTextLgn}
                     keyboardType= 'numeric'
                     value={this.state.greens}
                     onChangeText={(val) => this.inputValueUpdate(val, 'greens')}
                     />
-                </View>
+                </View> */}
             </View>
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Fairways Hit*</Text>
@@ -160,7 +210,9 @@ class AddRound extends Component{
                 onChangeText={(val) => this.inputValueUpdate(val, 'weather')}
                 ></TextInput>
                 </View>
+                
             </View>
+            
             <View style={styles.inputButtonView}>
                 <TouchableOpacity
                 title='Add Round'
@@ -169,9 +221,13 @@ class AddRound extends Component{
                 >
                     <Text style={styles.loginBtnTxt}>Add Round</Text>
                     </TouchableOpacity>
+                    
+            </View>
+            <View style={styles.inputView}>
+            <Text style = {styles.textLabel}>* is optional</Text>
             </View>
         </View>
-      </SafeAreaView>
+      </KeyboardAwareScrollView>
   
     );
   }
@@ -198,7 +254,7 @@ class AddRound extends Component{
       marginLeft:45,
       
       alignItems: "center",
-      //justifyContent:"center",
+      justifyContent:"center",
       padding:20
     },
     inputButtonView:{
@@ -213,7 +269,7 @@ class AddRound extends Component{
       },
     textLabel:{
       flex: 1,
-      fontSize: 15,
+      fontSize: 20,
       fontWeight: "bold"
     },
     textLabelGIR:{
@@ -225,12 +281,31 @@ class AddRound extends Component{
         borderStyle: "solid",
         borderWidth: 1,
         borderRadius:5,
-        width: "40%",
-        height: 30,
+        width: "20%",
+        height: 50,
         padding: 5,
+        color: 'black',
+        fontSize: 50,
         //justifyContent: "flex-end",
-        alignContent: "stretch"
+        //alignContent: "stretch",
+        alignItems: "center",
+        justifyContent: "center"
     },
+    inputTextViewCourse:{
+      borderColor: "black",
+      borderStyle: "solid",
+      borderWidth: 1,
+      borderRadius:5,
+      width: "40%",
+      height: 40,
+      padding: 5,
+      color: 'black',
+      fontSize: 40,
+      //justifyContent: "flex-end",
+      //alignContent: "stretch",
+      alignItems: "center",
+      //justifyContent: "center"
+  },
     inputTextViewGIR:{
         borderColor: "black",
         borderStyle: "solid",
@@ -273,8 +348,16 @@ class AddRound extends Component{
 
     },
     imageView:{
-        alignItems: "center"
+        alignItems: "center",
+        //width: (Dimensions.get('window').width/20),
+        //height: (Dimensions.get('window').height)/20,
+        //resizeMode: 'stretch',
         
+    },
+    pickerStyle:{
+      fontSize: 40,
+      alignItems: "center",
+      justifyContent: "center"
     }
 
   });

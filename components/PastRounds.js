@@ -1,40 +1,45 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
-import {addRound, getRound} from './api/RoundApi'
+import { FlatList, Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import firebase from '../api/firebaseConfig';
 
-//import firebase from 'firebase/app';
-import 'firebase/firestore'
-//import { firestore } from 'react-native-firebase';
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'First Item',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Second Item',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Third Item',
+  },
+];
+const Round = ({ title }) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{title}</Text>
+  </View>
+);
 
-// state = {
-//     roundList: [],
-//     currentRound : null
-// }
+const renderRound = ({ round }) => (
+  <Item title={round.title} />
+);
 
-// const pastRound = await firestore().collection("rounds").doc
-// ("46865sn3omOBLZhec9bi").get();
-
-// onRoundAdded = (round) => {
-//     console.log("round added");
-//     console.log(round);
-
-// }
-// onRoundReceived =(roundList) => {
-//     console.log(roundList);
-//     this.setState(prevState => ({
-//         roundList: prevState.roundList = roundList
-//     }));
-// }
-
-// componentDidMount= () => {
-//     getRound(onRoundReceived)
-// }
-
-
-const PastRounds = ({navigation})=>{
+class PastRounds extends Component{
+  constructor(){
+    super();
+  }
+  
+  render(){
     return(
       <SafeAreaView style={styles.container}>
+        <FlatList
+        data={DATA}
+        renderItem={renderRound}
+        keyExtractor={round => round.id}/>
+
           {/* <Te
           <Button
           title='Submit'
@@ -43,6 +48,8 @@ const PastRounds = ({navigation})=>{
   
     );
   }
+}
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -147,5 +154,5 @@ const PastRounds = ({navigation})=>{
   });
   
 
-  export default AddRound;
+  export default PastRounds;
 

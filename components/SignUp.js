@@ -1,54 +1,57 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, KeyboardAvoidingView, Alert} from 'react-native';
-import firebase from '../api/firebaseConfig';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-
+//import firebase from '../api/firebaseConfig';
+import firebase from 'firebase';
 const validator = require('validator');
 
+
 class SignUp extends Component{
-  constructor(){
-    super();
-    this.dbRef = firebase.firestore().collection('users');
+  constructor(props){
+    super(props);
+    //this.dbRef = firebase.firestore().collection('users');
     this.state = {
      fname: '',
      lname: '',
      email: '',
      password: ''
     };
+
+    this.signUpUser = this.signUpUser.bind(this);
   }
 
 
-  inputValueUpdate = (val, prop) =>{
-    const state = this.state;
-    state[prop] = val;
-    this.setState(state);
-  }
+  // inputValueUpdate = (val, prop) =>{
+  //   const state = this.state;
+  //   state[prop] = val;
+  //   this.setState(state);
+  // }
 
-  storeUser(){
-    if(!validator.isEmail(this.state.email)){
-      Alert.alert("Email must be proper format! (ex. johndoe@example.com");
-    }else{
-      this.dbRef.add({
-        fname: this.state.fname,
-        lname: this.state.lname,
-        email:this.state.password,
-        password: this.state.password
-      }).then((res) =>{
-        this.setState({
-          fname: '',
-          lname: '',
-          email: '',
-          password: ''
-        });
-        this.props.navigation.navigate('Home')
-      }).catch((err)=>{
-        console.log("error: ", err);
-      });
-    }
+  signUpUser(){
+    const { fname, lname, email, password } = this.state;
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((result) =>{
+      firebase.firestore().collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .set({
+        fname,
+        lname,
+        email
+      })
+      this.props.navigation.navigate('Home');
+      console.log(result);
+    }).catch((err) =>{
+      if(password.length < 6){
+        Alert.alert("password must be at least 6 characters long!")
+      }else{
+      Alert.alert("Please correctly enter all fields!");
+      }
+      console.log("error: ", err);
+    });
+    
   }
-
 
     render(){
         return(
@@ -61,16 +64,20 @@ class SignUp extends Component{
             <TextInput
               style={styles.inputTextLgn}
               placeholder="First Name..."
+              value={this.state.fname}
               placeholderTextColor="#003f5c"
-              onValueChange={(val) => this.inputValueUpdate(val, 'fname')}
+              //onValueChange={(val) => this.inputValueUpdate(val, 'fname')}
+              onChangeText ={(fname) => this.setState({fname})}
             />
               </View>
             <View style={styles.inputView}>
             <TextInput
               style={styles.inputTextLgn}
               placeholder="Last Name"
+              value={this.state.lname}
               placeholderTextColor="#003f5c"
-              onValueChange={(val) => this.inputValueUpdate(val, 'lname')}
+              //onValueChange={(val) => this.inputValueUpdate(val, 'lname')}
+              onChangeText ={(lname) => this.setState({lname})}
             />
               </View>
             <View style={styles.inputView}>
@@ -80,8 +87,10 @@ class SignUp extends Component{
               placeholderTextColor="#003f5c"
               keyboardType="email-address"
               textContentType="emailAddress"
-              onValueChange={(val) => this.inputValueUpdate(val, 'email')}
+              value={this.state.email}
+              //onValueChange={(val) => this.inputValueUpdate(val, 'email')}
               //onChangeText={text => this.setState({email:text})}
+              onChangeText ={(email) => this.setState({email})}
               />
               </View>
               <View style={styles.inputView}>
@@ -90,15 +99,17 @@ class SignUp extends Component{
               placeholder="Password..."
               placeholderTextColor="#003f5c"
               textContentType="password"
-              onValueChange={(val) => this.inputValueUpdate(val, 'password')}
+              value={this.state.password}
+              secureTextEntry={true}
+              //onValueChange={(val) => this.inputValueUpdate(val, 'password')}
+              onChangeText ={(password) => this.setState({password})}
               /></View>
               <TouchableOpacity style={styles.loginBtn} 
-              onPress={() => this.storeUser()}>
+              onPress={() => this.signUpUser()}>
                 <Text style={styles.loginBtnTxt}
                 >Sign Up!</Text>
               </TouchableOpacity>
               </View>
-              
           </KeyboardAwareScrollView>
         );
     }

@@ -1,13 +1,3 @@
-// import firebase from 'firebase';
-// import 'firebase/firestore'
-//import firebase from 'firebase';
-
-// import * as firebase from 'firebase';
-// import '@firebase/firestore';
-
-// import firebase from "firebase/app"
-// import "firebase/firestore"
-
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -25,20 +15,10 @@ const firebaseConfig = {
 }
 
 
-  //if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  //}
-  //const db = 
-  firebase.firestore()
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-  //const app = 
-  //firebase.initializeApp(firebaseConfig);
-  //firebase.initializeApp(firebaseConfig)
-  //firebase.firestore();
+firebase.firestore()
 
-  //const db = firebase.firestore(app);
-  //export const roundRef = db.collection('rounds');
-
-  //export const firestore = firebase.firestore()
-  //export { db } 
-  export default firebase
+export default firebase

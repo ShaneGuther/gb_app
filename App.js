@@ -1,41 +1,120 @@
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { Component} from 'react';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
 import { color } from 'react-native-reanimated';
 
-import HomePage from './components/Home';
+//import firebase from '../api/fireBaseConfig'
+import firebase from 'firebase';
+import Home from './components/Home';
 import Login from './components/Login';
 import PastRounds from './components/PastRounds';
 import AddRound from './components/AddRound';
 import SignUp from './components/SignUp';
 
-const Stack = createStackNavigator();
 
-export default function App() {
-  return (
+// import { Provider } from 'react-redux';
+// import { createStore, applyMiddleware } from 'redux'
+// import rootReducer from './redux/reducers';
+// import thunk from 'redux-thunk';
+
+//const store = createStore(rootReducer, applyMiddleware(thunk));
+
+
+const Stack = createStackNavigator();
+ 
+class App extends Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        loaded: false,
+      }
+    }
+
+
+    componentDidMount(){
+      firebase.auth().onAuthStateChanged((user) =>{
+        if(!user){
+          this.setState({
+            loggedIn: false,
+            loaded: true,
+          })
+        }else{
+          this.setState({
+            loggedIn: true,
+            loaded: true,
+          })
+        }
+      })
+    }
+
+    render(){
+      const {loggedIn, loaded} = this.state;
+      if(!loaded){
+        return(
+          <View style={{flex: 1, justifyContent: "center"}}>
+            <Text>Loading...</Text>
+          </View>
+        )
+      }
+      if(!loggedIn){
+        return(
+          <NavigationContainer>{
+            <Stack.Navigator initialRouteName="Login">
+              <Stack.Screen 
+              name="Login" 
+              component={Login} 
+              options={{headerShown: false}}
+              />
+              <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{title: "Sign Up",
+              headerTintColor:"#009933",
+              headerTitleStyle:{
+                fontSize: 20,
+                fontWeight: "bold"}}}
+              />
+              <Stack.Screen 
+              name="Home" 
+              component={Home} 
+              options={{title: "Home",
+              headerTintColor:"#009933",
+              headerTitleStyle:{
+                fontSize: 20,
+                fontWeight: "bold"}}}
+              />
+              <Stack.Screen
+              name="AddRound"
+              component={AddRound}
+              options={{title: "Add Round",
+              headerTintColor:"#009933",
+              headerTitleStyle:{
+                fontSize: 20,
+                fontWeight: "bold"}}}
+                />
+                <Stack.Screen
+                name="PastRounds"
+                component={PastRounds}
+                options={{title: "Past Rounds",
+                headerTintColor:"#009933",
+                headerTitleStyle:{
+                  fontSize: 20,
+                  fontWeight: "bold"}}}
+                />
+            </Stack.Navigator>
+          }</NavigationContainer>
+        )
+        }
+     return (
     <NavigationContainer>{
-      <Stack.Navigator>
-        <Stack.Screen 
-        name="Login" 
-        component={Login} 
-        options={{headerShown: false}}
-        />
-        <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{title: "Sign Up",
-        headerTintColor:"#009933",
-        headerTitleStyle:{
-          fontSize: 20,
-          fontWeight: "bold"}}}
-        />
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen 
         name="Home" 
-        component={HomePage} 
-        options={{title: "HomePage",
+        component={Home} 
+        options={{title: "Home",
         headerTintColor:"#009933",
         headerTitleStyle:{
           fontSize: 20,
@@ -60,8 +139,9 @@ export default function App() {
             fontWeight: "bold"}}}
           />
       </Stack.Navigator>
-}</NavigationContainer>
+    }</NavigationContainer>
   );
+}
 }
 
 
@@ -129,3 +209,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
+
+export default App;

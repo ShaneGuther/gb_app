@@ -1,10 +1,42 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, Alert} from 'react-native';
 import { NavigationRouteContext } from '@react-navigation/core';
+import firebase from 'firebase';
 
 
-const Login = ({navigation}) => {
+  class Login extends Component{
+    constructor(props){
+      super(props);
+      //this.dbRef = firebase.firestore().collection('users');
+      this.state = {
+       email: '',
+       password: ''
+      };
+  
+      this.signUpUser = this.signInUser.bind(this);
+    }
+  
+  
+    // inputValueUpdate = (val, prop) =>{
+    //   const state = this.state;
+    //   state[prop] = val;
+    //   this.setState(state);
+    // }
+  
+    signInUser(){
+      const { fname, lname, email, password } = this.state;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((result) =>{
+        console.log(result);
+        this.props.navigation.navigate('Home')
+      }).catch((err) =>{
+        Alert.alert("Please enter the correct login details!");
+        console.log("error: ", err);
+      });
+    }
+
+    render(){
     return(
     <SafeAreaView style={styles.container}>
         <Text style={styles.heading}>Golf Buddy</Text>
@@ -13,31 +45,39 @@ const Login = ({navigation}) => {
           style={styles.inputTextLgn}
           placeholder="Email..."
           placeholderTextColor="#003f5c"
-          onChangeText={text => this.setState({email:text})}/>
+          //value= {this.state.email}
+          onChangeText={text => this.setState({email:text})}
+          />
           </View>
           <View style={styles.inputView}>
             <TextInput
           style={styles.inputTextLgn}
           placeholder="Password..."
+          //value={this.state.password}
           placeholderTextColor="#003f5c"
-          //onChangeText={text => this.setState({email:text})}
+          textContentType="password"
+          secureTextEntry={true}
+          onChangeText={text => this.setState({password:text})}
           /></View>
   
           <TouchableOpacity>
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.loginBtn} 
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => this.signInUser()}
+          >
             <Text style={styles.loginBtnTxt}
             >LOGIN</Text>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={() => navigation.navigate('SignUp')}>
+          onPress={() => this.props.navigation.navigate('SignUp')}>
             <Text style={styles.signUpText}>Don't have an account?  Sign up!</Text>
           </TouchableOpacity>
       </SafeAreaView>
     );
   }
+}
+
 
   const styles = StyleSheet.create({
     container: {
@@ -66,7 +106,7 @@ const Login = ({navigation}) => {
     },
     inputTextLgn:{
       height:50,
-      color:"white"
+      color:"black"
     },
     inputTextAdd:{
   

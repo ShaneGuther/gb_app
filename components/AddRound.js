@@ -285,7 +285,7 @@ class AddRound extends Component{
         height: 50,
         padding: 5,
         color: 'black',
-        fontSize: 50,
+        //fontSize: 50,
         //justifyContent: "flex-end",
         //alignContent: "stretch",
         alignItems: "center",
@@ -304,6 +304,7 @@ class AddRound extends Component{
       //justifyContent: "flex-end",
       //alignContent: "stretch",
       alignItems: "center",
+      alignItems: "stretch"
       //justifyContent: "center"
   },
     inputTextViewGIR:{
@@ -320,12 +321,12 @@ class AddRound extends Component{
     inputTextLgn:{
         flex: 1,
       height:50,
-      width: "80%",
+      width: "100%",
       borderColor: "black",
       borderStyle: "solid",
       borderWidth: 1,
       borderRadius:10,
-      fontSize: 25,
+      //fontSize: 25,
      
     },
     loginBtn:{

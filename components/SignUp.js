@@ -44,7 +44,7 @@ class SignUp extends Component{
       console.log(result);
     }).catch((err) =>{
       if(password.length < 6){
-        Alert.alert("password must be at least 6 characters long!")
+        Alert.alert("Password must be at least 6 characters long!")
       }else{
       Alert.alert("Please correctly enter all fields!");
       }

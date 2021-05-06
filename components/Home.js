@@ -3,17 +3,12 @@ import 'react-native-gesture-handler';
 import React from 'react';
 //import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, Component} from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 
 class Home extends React.Component{
 
-  // componentDidMount(){
-  //   this.props.fetchUser();
-  // }
-
-
-
   render(){
-//const HomePage = ({navigation}) =>{
     return(
     <SafeAreaView style={styles.container}>
       <Text style={styles.areaTitles}>Rounds</Text>
@@ -71,9 +66,4 @@ const styles = StyleSheet.create({
   }
 });
 
-
-//const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch)
-
-
-//export default connect(null, mapDispatchProps)(Home);
 export default Home;

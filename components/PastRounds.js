@@ -1,53 +1,109 @@
 import 'react-native-gesture-handler';
-import { FlatList, Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity} from 'react-native';
-import React, { Component } from 'react';
+import { FlatList, Button, StyleSheet, Text, View, SafeAreaView, Image, Platform, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
 import firebase from '../api/firebaseConfig';
 
-// const DATA = [
-//   {
-//     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-//     title: 'First Item',
-//   },
-//   {
-//     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-//     title: 'Second Item',
-//   },
-//   {
-//     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-//     title: 'Third Item',
-//   },
-// ];
-const Round = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
 
-const renderRound = ({ round }) => (
-  <Item title={round.title} />
+function Users(){
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+  const dbRef = firebase.firestore();
+
+  
+  useEffect(()=>{
+  const subscriber = dbRef.collection('users')
+  .doc(firebase.auth().currentUser.uid)
+  .collection('rounds')
+  .onSnapshot(querySnapshot =>{
+    const users = [];
+    querySnapshot.forEach(documentSnapshot => {
+      users.push({
+        ...documentSnapshot.data(),
+        key: documentSnapshot.id
+      });
+    });
+    setUsers(users);
+    setLoading(false);
+  });
+  return () => subscriber();
+
+
+}, []);
+
+if(loading){
+  return <ActivityIndicator/>;
+}
+return(
+  //<SafeAreaView style={styles.container}>
+    <FlatList
+    data={users}
+    //numColumns={2}
+    renderItem={({ item }) =>(
+      <View style={styles.itemView}>
+        <TouchableOpacity>
+        <Text style={styles.textLabel}>Course: {item.course}</Text>
+        </TouchableOpacity>
+        <Text style={styles.parNum}>{item.score}/{item.par}</Text>
+        <Text>Score/Par</Text>
+        <Text>GIR: {item.gir}/{item.greens}</Text>
+        <Text>FWH: {item.fwh}/{item.fairways}</Text>
+        {/* <Button title="Update">Update</Button>
+        <Button title="Delete">Delete</Button> */}
+      </View>
+    )}
+    //keyExtractor={round => round.id}
+    />
 );
+}
+
+
+
+
+
 
 class PastRounds extends Component{
+ // const user = this.dbRef.collection('users').doc(firebase.auth().currentUser.uid);
   constructor(){
     super();
-  }
-  
-  render(){
-    return(
-      <SafeAreaView style={styles.container}>
-        <FlatList
-        data={DATA}
-        renderItem={renderRound}
-        keyExtractor={round => round.id}/>
+    this.dbRef = firebase.firestore();
+   
 
-          {/* <Te
-          <Button
-          title='Submit'
-          onPress={()=> addRound()}/> */}
-      </SafeAreaView>
-  
-    );
   }
+  render(){
+    
+    return(
+    <SafeAreaView style={styles.container}>
+      <Users/>
+    </SafeAreaView>
+    )
+  }
+  
+  
+  
+  // loadRounds(){
+  // this.dbRef.collection('users').doc(firebase.auth().currentUser.uid).collection('rounds').get()
+  // .then((snap) => {
+  //   console.log('testLR');
+  //   snap.forEach((doc) => {
+  //     console.log(doc.id, ' => ', doc.data());
+  //   });
+  // });
+
+  // }
+
+  // useEffect(() => {
+  //   loadRounds();
+  // }, []);
+  // componentDidMount = () =>{
+  //   this.focusListener = this.props.navigation.addListener('focus', 
+  //   ()=> {
+  //     console.log('testCDM');
+  //     this.loadRounds()
+  //   })
+  // }
+
+  //loadRounds();
+ 
 }
 
   const styles = StyleSheet.create({
@@ -70,62 +126,15 @@ class PastRounds extends Component{
       justifyContent: "space-between",
       width:"80%",
       marginLeft:45,
-      
       alignItems: "center",
       //justifyContent:"center",
       padding:20
     },
-    inputButtonView:{
-        //flexDirection: 'row',
-        //flex: 1,
-        //justifyContent: "space-between",
-        //width:"80%",
-        
-        alignItems: "center",
-        //justifyContent:"center",
-        //padding:20
-      },
     textLabel:{
       flex: 1,
-      fontSize: 15,
-      fontWeight: "bold"
-    },
-    textLabelGIR:{
-        fontSize: 20,
-        margin: 3
-    },
-    inputTextView:{
-        borderColor: "black",
-        borderStyle: "solid",
-        borderWidth: 1,
-        borderRadius:5,
-        width: "40%",
-        height: 30,
-        padding: 5,
-        //justifyContent: "flex-end",
-        alignContent: "stretch"
-    },
-    inputTextViewGIR:{
-        borderColor: "black",
-        borderStyle: "solid",
-        borderWidth: 1,
-        borderRadius:5,
-        width: "20%",
-        height: 30,
-        padding: 5,
-        //justifyContent: "flex-end",
-        alignContent: "stretch"
-    },
-    inputTextLgn:{
-        flex: 1,
-      height:50,
-      width: "80%",
-      borderColor: "black",
-      borderStyle: "solid",
-      borderWidth: 1,
-      borderRadius:10,
-      fontSize: 25,
-     
+      fontSize: 20,
+      fontWeight: "bold",
+      color: 'white'
     },
     loginBtn:{
       width:"80%",
@@ -149,10 +158,20 @@ class PastRounds extends Component{
     imageView:{
         alignItems: "center"
         
+    },
+    itemView: {
+      backgroundColor: 'green',
+      padding: 20,
+      marginVertical: 5,
+      marginHorizontal: 10,
+      borderRadius: 20
+    },
+    parNum: {
+      fontSize: 30,
+
     }
 
   });
   
 
   export default PastRounds;
-

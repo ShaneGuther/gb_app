@@ -4,19 +4,36 @@ import { Button, StyleSheet, Text, View, SafeAreaView,
   Image, Platform, TextInput, TouchableOpacity, 
   DatePickerAndroid, StatusBarIOS, TouchableNativeFeedbackBase, 
   ScrollView, Alert, KeyboardAvoidingView, Dimensions, KeyboardAware} from 'react-native';
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-  import {Picker} from '@react-native-picker/picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {Picker} from '@react-native-picker/picker';
 import firebase from '../api/firebaseConfig';
 import Animated from 'react-native-reanimated';
 import RNPickerSelect from 'react-native-picker-select';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+const GooglePlacesComp = () => {
+  return (
+    <GooglePlacesAutocomplete
+      placeholder='Search'
+      fetchDetails={true}
+      onPress={(data, details = null) => {
+        console.log(data, details);
+      }}
+      
+      query={{
+        key: 'AIzaSyBEDvsaazGPgtcp0EF11S4yIqV-HJQGK-M',
+        language: 'en',
+      }}
+    />
+  );
+};
 
 
 
 class AddRound extends Component{
     constructor(){
       super();
-      this.dbRef = firebase.firestore().collection('rounds');
+      this.dbRef = firebase.firestore().collection('users');
       this.state = {
         course:'',
         fairways: '',
@@ -36,6 +53,7 @@ class AddRound extends Component{
     }
 
     storeRound(){
+      //Some conditionals to check if input is valid, will alert user and not submit if its not valid
       if(this.state.course === '' || this.state.par === '' || this.state.score === ''){
         Alert.alert("Course name, par and score are required!");
       }else if(this.state.greens > 18 || this.state.gir > 18){
@@ -43,7 +61,8 @@ class AddRound extends Component{
       }else if(this.state.fairways > 18 || this.state.fwh > 18){
         Alert.alert('Fairways/fairways hit must be less than 18!');
       }else{
-        this.dbRef.add({
+        //gets the user id from the firebase authentication and adds the round data to that user's collection of rounds
+        this.dbRef.doc(firebase.auth().currentUser.uid).collection('rounds').add({
         course: this.state.course,
         fairways: this.state.fairways,
         fwh: this.state.fwh,
@@ -52,7 +71,7 @@ class AddRound extends Component{
         par: this.state.par,
         score: this.state.score,
         weather: this.state.weather,
-        
+        //resets the variable states to empty values and navigates out of the page
       }).then((res) => {
         this.setState({
         course:'',
@@ -74,29 +93,49 @@ class AddRound extends Component{
   
   render(){
     return(
+      <KeyboardAwareScrollView 
+      keyboardShouldPersistTaps={'handled'}
+      style={styles.container}
+      >
 
-      <KeyboardAwareScrollView style={styles.container}>
-       <View style={styles.imageView}>
+       <View 
+       style={styles.imageView}
+       >
         <Image 
         source={require("../assets/gcexample.png")}
         style={{height: 200, width: 200}}
         />
         </View>
-        <View style={styles.columnView}
-        resetScrollToCoords={{x:0, y:0}}
+        <View 
+        style={styles.columnView}
+        //resetScrollToCoords={{x:0, y:0}}
         contentContainerStyle={styles.columnView}
-        scrollEnabled={false}>
-           
-            <View style={styles.inputView}>
-                <Text style={styles.textLabel}>Course Name</Text>
-                <View style={styles.inputTextViewCourse}>
-                <TextInput 
-                styles={styles.inputTextLgn}
-                value={this.state.course}
-                onChangeText={(val) => this.inputValueUpdate(val, 'course')}
-                />
-                </View>
+        //scrollEnabled={false}
+        >
+          <View style={styles.inputView, {zIndex: 200}}>
+            <View 
+            styles={{borderColor: 'black', borderWidth: 2}}>
+            <Text style={styles.textLabel}>Course</Text>
+            <GooglePlacesComp
+            renderDescription={(row) => row.description}
+            //style={styles.inputTextLgn}
+            styles={{
+              container: {
+                zIndex: 999,
+                borderColor: 'black',
+                borderWidth: 2
+              },
+              listView: {
+                backgroundColor: 'white',
+                //position: 'absolute',
+                marginTop: 10,
+              },
+            }}
+            value={this.state.course}
+            onChangeText={(val) => this.inputValueUpdate(val, 'course')}/>
             </View>
+            </View>
+            
             <View style={styles.inputView}>
                 <Text style={styles.textLabel}>Course Par</Text>
                 <View style={styles.inputTextView}>
@@ -221,10 +260,9 @@ class AddRound extends Component{
                 >
                     <Text style={styles.loginBtnTxt}>Add Round</Text>
                     </TouchableOpacity>
-                    
             </View>
             <View style={styles.inputView}>
-            <Text style = {styles.textLabel}>* is optional</Text>
+            <Text style = {styles.optionalLabel}>* is optional</Text>
             </View>
         </View>
       </KeyboardAwareScrollView>
@@ -232,7 +270,11 @@ class AddRound extends Component{
     );
   }
 }
-  const styles = StyleSheet.create({
+
+
+
+const styles = StyleSheet.create({
+    
     container: {
       flex: 1,
       backgroundColor: 'white',
@@ -291,12 +333,14 @@ class AddRound extends Component{
         alignItems: "center",
         justifyContent: "center"
     },
+    
     inputTextViewCourse:{
       borderColor: "black",
       borderStyle: "solid",
       borderWidth: 1,
       borderRadius:5,
       width: "40%",
+      paddingBottom: 10,
       height: 40,
       padding: 5,
       color: 'black',
@@ -359,6 +403,10 @@ class AddRound extends Component{
       fontSize: 40,
       alignItems: "center",
       justifyContent: "center"
+    },
+    optionalLabe:{
+      flex: 1,
+      fontSize: 10,
     }
 
   });

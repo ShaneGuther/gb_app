@@ -2,6 +2,7 @@
 #import UIKit;
 #import Firebase;
 #import "AppDelegate.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -44,6 +45,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyBEDvsaazGPgtcp0EF11S4yIqV-HJQGK-M"]; // add this line using the api key obtained from Google Console
   if ([FIRApp defaultApp] == nil) {
      [FIRApp configure];
    }

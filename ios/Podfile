@@ -14,6 +14,10 @@ pod 'Firebase/Firestore'
 # add pods for any other desired Firebase products
 # https://firebase.google.com/docs/ios/setup#available-pods
 
+# React Native Maps dependencies
+rn_maps_path = '../node_modules/react-native-maps'
+pod 'react-native-google-maps', :path => rn_maps_path
+
 target 'gbapp' do
   use_unimodules!
   config = use_native_modules!

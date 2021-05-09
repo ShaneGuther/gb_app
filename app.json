@@ -25,7 +25,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "android.pkg.gb"
+      "package": "android.pkg.gb",
+      "config": {
+        "googleMaps": {"apiKey": "AIzaSyBEDvsaazGPgtcp0EF11S4yIqV-HJQGK-M"}
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

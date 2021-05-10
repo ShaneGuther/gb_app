@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
 import React from "react";
-//import { createStackNavigator, createAppContainer } from 'react-navigation';
 import {
   Button,
   StyleSheet,
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
   },
   loginBtnTxt: {
     fontSize: 21,
-    color: "white",
+    color: "yellow",
   },
   areaTitles: {
     marginTop: 20,

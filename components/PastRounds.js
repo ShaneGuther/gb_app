@@ -75,17 +75,27 @@ function Users() {
             }}
           >
             <Text style={styles.textLabel}>Course: {item.course}</Text>
-            <Text style={styles.textLabel}>ID: {item.itemId}</Text>
           </TouchableOpacity>
-          <Text style={styles.parNum}>
-            {item.score}/{item.par}
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={({ justifyContent: "center" }, styles.parNum)}>
+              <Text style={{ color: "yellow" }}>{item.score}</Text>/{item.par} (
+              {item.score - item.par})
+            </Text>
+          </View>
+          <Text style={{ color: "white", fontSize: 30 }}>
+            GIR:{" "}
+            <Text style={{ color: "black" }}>
+              {item.gir}/{item.greens}
+            </Text>
           </Text>
-          <Text>Score/Par</Text>
-          <Text>
-            GIR: {item.gir}/{item.greens}
+          <Text style={{ color: "white", fontSize: 30 }}>
+            FWH:{" "}
+            <Text style={{ color: "black" }}>
+              {item.fwh}/{item.fairways}
+            </Text>
           </Text>
-          <Text>
-            FWH: {item.fwh}/{item.fairways}
+          <Text style={{ color: "white", fontSize: 30 }}>
+            Notes: <Text style={{ color: "black" }}>{item.weather}</Text>
           </Text>
           {/* <Button title="Update">Update</Button>
           <Button
@@ -179,7 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   parNum: {
-    fontSize: 30,
+    fontSize: 45,
   },
 });
 

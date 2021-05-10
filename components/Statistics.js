@@ -13,7 +13,6 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { NavigationRouteContext } from "@react-navigation/core";
 import firebase from "firebase";
 
 //globabl variables for calculating scoring average
@@ -23,6 +22,7 @@ var totalScore = 0;
 var averageScore = 0;
 var scoreMsg = "";
 
+//Function to retrieve data from firestore and calculate player statistics
 function Stats() {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
@@ -45,23 +45,21 @@ function Stats() {
           totalPar = parseInt(totalPar) + parseInt(documentSnapshot.data().par);
           totalScore =
             parseInt(totalScore) + parseInt(documentSnapshot.data().score);
-          //}
           users.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
+
         averageScore = totalScore - totalPar;
         averageScore /= count;
-        // totalPar = totalPar / count;
-        // totalScore = totalScore / count;
 
         if (averageScore > 0) {
           averageScore = Math.round(Math.abs(averageScore));
-          scoreMsg = `Average Score: ${averageScore} under`;
+          scoreMsg = `+${averageScore}`;
         } else if (averageScore < 0) {
           averageScore = Math.round(Math.abs(averageScore));
-          scoreMsg = `Average Score: ${averageScore} over`;
+          scoreMsg = `-${averageScore}`;
         } else {
           scoreMsg = "Even par;";
         }
@@ -78,19 +76,16 @@ function Stats() {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <View style={styles.inputView}>
+        <Text style={styles.textHeading}>Average </Text>
         <Text style={styles.textLabel}>{scoreMsg}</Text>
-        <Text style={styles.textLabel}>Total Rounds: {count}</Text>
+        <Text style={styles.textHeading}>Total Rounds </Text>
+        <Text style={styles.textLabel}>{count}</Text>
       </View>
-      <View style={styles.inputView}>
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => this.signInUser()}
-        >
-          <Text style={styles.loginBtnTxt}>Shot Stats</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.loginBtn}>
+        <Text style={styles.loginBtnTxt}>Club Distances</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -98,35 +93,11 @@ function Stats() {
 class Statistics extends Component {
   constructor(props) {
     super(props);
-    //this.dbRef = firebase.firestore().collection('users');
     this.dbRef = firebase.firestore();
-    this.state = {
-      email: "",
-      password: "",
-    };
-
-    // this.signUpUser = this.signInUser.bind(this);
   }
 
-  // signInUser(){
-  //   const { fname, lname, email, password } = this.state;
-  //   firebase.auth().signInWithEmailAndPassword(email, password)
-  //   .then((result) =>{
-  //     console.log(result);
-  //     this.props.navigation.navigate('Home')
-  //   }).catch((err) =>{
-  //     Alert.alert("Please enter the correct login details!");
-  //     console.log("error: ", err);
-  //   });
-  // }
-
   render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        {/* <Text >Handicap {count}</Text> */}
-        <Stats />
-      </SafeAreaView>
-    );
+    return <Stats />;
   }
 }
 
@@ -146,27 +117,18 @@ const styles = StyleSheet.create({
   },
   inputView: {
     width: "100%",
-    //borderColor: "grey",
-    //borderStyle: "solid",
-    //borderWidth: 1,
-    //borderRadius: 10,
-    height: 150,
+    height: "50%",
     marginBottom: 10,
     justifyContent: "center",
+    alignItems: "center",
     //padding: 20,
   },
   inputTextLgn: {
     height: 50,
     color: "black",
   },
-  inputTextAdd: {},
-  forgot: {
-    color: "black",
-    fontSize: 15,
-    margin: 20,
-  },
   loginBtn: {
-    width: "50%",
+    width: "80%",
     backgroundColor: "#009933",
     borderRadius: 10,
     height: 60,
@@ -177,7 +139,7 @@ const styles = StyleSheet.create({
   },
   loginBtnTxt: {
     fontSize: 21,
-    color: "white",
+    color: "yellow",
   },
   signUpText: {
     marginTop: 15,
@@ -185,8 +147,16 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     flex: 1,
-    fontSize: 20,
+    fontSize: 60,
     fontWeight: "bold",
+    color: "green",
+  },
+  textHeading: {
+    flex: 1,
+    fontSize: 40,
+    //fontWeight: "bold",
+    color: "black",
+    textDecorationLine: "underline",
   },
 });
 

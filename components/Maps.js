@@ -1,19 +1,8 @@
 import "react-native-gesture-handler";
-import React, { Component, useEffect, useState } from "react";
-//import { MapView } from "expo";
+import React, { Component } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  Image,
-  Platform,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet } from "react-native";
 import firebase from "../api/firebaseConfig";
 
 class Maps extends Component {
@@ -41,9 +30,9 @@ class Maps extends Component {
           lng: doc.data().lng,
           course: doc.data().course,
         });
-        console.log("document: ", doc.data());
-        console.log("lat: ", Number(doc.data().lat));
-        console.log("lng: ", Number(doc.data().lng));
+        // console.log("document: ", doc.data());
+        // console.log("lat: ", Number(doc.data().lat));
+        // console.log("lng: ", Number(doc.data().lng));
       });
   };
   componentDidMount() {
@@ -78,8 +67,6 @@ class Maps extends Component {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    //height: 400,
-    //width: 400,
     justifyContent: "flex-end",
     alignItems: "center",
   },

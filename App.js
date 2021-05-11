@@ -1,22 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import "react-native-gesture-handler";
 import React, { Component } from "react";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  Platform,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import { color } from "react-native-reanimated";
-
-//import firebase from '../api/fireBaseConfig'
+import { StyleSheet, Text, View } from "react-native";
 import firebase from "firebase";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -165,6 +151,23 @@ class App extends Component {
               }}
             />
             <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{
+                title: "Sign Up",
+                headerTintColor: "#009933",
+                headerTitleStyle: {
+                  fontSize: 20,
+                  fontWeight: "bold",
+                },
+              }}
+            />
+            <Stack.Screen
               name="AddRound"
               component={AddRound}
               options={{
@@ -227,7 +230,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    //paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   heading: {
     fontWeight: "bold",

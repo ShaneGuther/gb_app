@@ -2,36 +2,21 @@ import "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import {
   FlatList,
-  Button,
   StyleSheet,
   Text,
   View,
   SafeAreaView,
-  Image,
-  Platform,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import React, { Component, useEffect, useState } from "react";
 import firebase from "../api/firebaseConfig";
 
-// function sendData(item) {
-//   const nav = useNavigation();
-//   nav.navigate("Maps", {
-//     itemId: item.id,
-//   });
-// }
-
 function Users() {
   const [loading, setLoading] = useState(true);
   const [rounds, setRounds] = useState([]);
   const dbRef = firebase.firestore();
   const navigation = useNavigation();
-
-  // _onPressItem = (user) => {
-  //   this.props.navigation.navigate("Maps");
-  // };
 
   useEffect(() => {
     const subscriber = dbRef
@@ -41,8 +26,6 @@ function Users() {
       .onSnapshot((querySnapshot) => {
         const rounds = [];
         querySnapshot.forEach((documentSnapshot) => {
-          //console.log("the id", documentSnapshot.id);
-          //console.log("te data", documentSnapshot.data());
           rounds.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
@@ -64,17 +47,13 @@ function Users() {
       renderItem={({ item }) => (
         <View style={styles.itemView}>
           <TouchableOpacity
-            // onPress={() => {
-            //   sendData(item);
-            // }}
             onPress={() => {
-              console.log("The ids:", item.key);
               navigation.navigate("Maps", {
                 id: item.key,
               });
             }}
           >
-            <Text style={styles.textLabel}>Course: {item.course}</Text>
+            <Text style={styles.textLabel}>{item.course}</Text>
           </TouchableOpacity>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text style={({ justifyContent: "center" }, styles.parNum)}>
@@ -97,15 +76,6 @@ function Users() {
           <Text style={{ color: "white", fontSize: 30 }}>
             Notes: <Text style={{ color: "black" }}>{item.weather}</Text>
           </Text>
-          {/* <Button title="Update">Update</Button>
-          <Button
-            title="Delete"
-            onPress={() => {
-              navigation.navigate("Maps");
-            }}
-          >
-            Delete
-          </Button> */}
         </View>
       )}
     />
@@ -134,9 +104,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    //   alignItems: 'center',
-    //   justifyContent: 'center',
-    //paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   heading: {
     fontWeight: "bold",
@@ -151,7 +118,6 @@ const styles = StyleSheet.create({
     width: "80%",
     marginLeft: 45,
     alignItems: "center",
-    //justifyContent:"center",
     padding: 20,
   },
   textLabel: {

@@ -1,20 +1,22 @@
 import "react-native-gesture-handler";
 import React from "react";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  Platform,
-  TextInput,
-  TouchableOpacity,
-  Component,
-} from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { getAuth, signOut } from "firebase/auth";
+import { StyleSheet, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import firebase from "firebase";
 
 class Home extends React.Component {
+  signOutUser() {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        this.props.navigation.navigate("Login");
+      })
+      .catch((err) => {
+        console.log("error: ", err);
+      });
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -38,9 +40,11 @@ class Home extends React.Component {
         >
           <Text style={styles.loginBtnTxt}>Season Stats</Text>
         </TouchableOpacity>
-        <Text style={styles.areaTitles}>Shot Tracker</Text>
-        <TouchableOpacity style={styles.loginBtn}>
-          <Text style={styles.loginBtnTxt}>Measure a Shot</Text>
+        <TouchableOpacity
+          style={styles.signOutBtn}
+          onPress={() => this.signOutUser()}
+        >
+          <Text style={styles.loginBtnTxt}>Sign Out</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -74,6 +78,16 @@ const styles = StyleSheet.create({
     marginBottom: 13,
     fontSize: 30,
     fontWeight: "bold",
+  },
+  signOutBtn: {
+    width: "40%",
+    backgroundColor: "black",
+    borderRadius: 10,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 150,
+    marginBottom: 30,
   },
 });
 

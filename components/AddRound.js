@@ -2,29 +2,16 @@ import "react-native-gesture-handler";
 import React, { Component } from "react";
 import { LogBox } from "react-native";
 import {
-  Button,
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
-  Image,
-  Platform,
   TextInput,
   TouchableOpacity,
-  DatePickerAndroid,
-  StatusBarIOS,
-  TouchableNativeFeedbackBase,
-  ScrollView,
   Alert,
-  KeyboardAvoidingView,
-  Dimensions,
-  KeyboardAware,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Picker } from "@react-native-picker/picker";
 import firebase from "../api/firebaseConfig";
-import Animated from "react-native-reanimated";
-import RNPickerSelect, { defaultStyles } from "react-native-picker-select";
+import RNPickerSelect from "react-native-picker-select";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 //Couldn't find a way to fix the warning from having the google places autocomplete component inside a scrollview
@@ -100,7 +87,6 @@ class AddRound extends Component {
             lat: "",
             lng: "",
           });
-          //this.props.navigation.navigate('Home')
           this.props.navigation.navigate("Home");
         })
         .catch((err) => {
@@ -119,7 +105,6 @@ class AddRound extends Component {
           style={styles.columnView}
           contentContainerStyle={styles.columnView}
         >
-          {/* <Text style={styles.textLabel}>Course</Text> */}
           <View style={(styles.inputView, { zIndex: 200 })}>
             <View
               styles={
@@ -158,8 +143,8 @@ class AddRound extends Component {
                     lat: details.geometry.location.lat,
                     lng: details.geometry.location.lng,
                   });
-                  console.log("Details : ", details);
-                  console.log("Data : ", data);
+                  // console.log("Details : ", details);
+                  // console.log("Data : ", data);
                 }}
                 query={{
                   key: "AIzaSyBEDvsaazGPgtcp0EF11S4yIqV-HJQGK-M",
@@ -183,8 +168,8 @@ class AddRound extends Component {
                   ]}
                   style={styles.pickerStyle}
                   onValueChange={(val) => {
-                    this.inputValueUpdate(val, "par"),
-                      console.log(this.state.par);
+                    this.inputValueUpdate(val, "par");
+                    //console.log(this.state.par);
                   }}
                   value={this.state.par}
                   useNativeAndroidPickerStyle={false}
@@ -200,26 +185,6 @@ class AddRound extends Component {
                   value={this.state.score}
                   onChangeText={(val) => this.inputValueUpdate(val, "score")}
                 ></TextInput>
-                {/* <RNPickerSelect
-                  style={styles.pickerStyle}
-                  placeholder={{
-                    label: "Eg. 90",
-                    value: null,
-                    color: "#9EA0A4",
-                  }}
-                  value={this.state.score}
-                  onValueChange={(val) => this.inputValueUpdate(val, "score")}
-                  items={[
-                    { label: "68", value: 68, color: "green" },
-                    { label: "69", value: 69, color: "green" },
-                    { label: "70", value: 70, color: "green" },
-                    { label: "71", value: 71, color: "green" },
-                    { label: "72", value: 72, color: "green" },
-                    { label: "73", value: 73, color: "green" },
-                    { label: "74", value: 74, color: "green" },
-                  ]}
-                  useNativeAndroidPickerStyle={false}
-                ></RNPickerSelect> */}
               </View>
             </View>
 
@@ -255,13 +220,6 @@ class AddRound extends Component {
                   useNativeAndroidPickerStyle={false}
                 ></RNPickerSelect>
               </View>
-              {/* <View style={styles.inputTextViewGIR}>
-                    <TextInput 
-                    styles={styles.inputTextLgn}
-                    keyboardType= 'numeric'
-                    value={this.state.gir}
-                    onChangeText={(val) => this.inputValueUpdate(val, 'gir')}
-                    /> */}
               <Text style={styles.textLabelGIR}>/</Text>
               <View style={styles.inputTextViewGIR}>
                 <Text>18</Text>
@@ -307,7 +265,6 @@ class AddRound extends Component {
                 style={styles.pickerStyle}
                 placeholder={{}}
                 onValueChange={(val) => this.inputValueUpdate(val, "fairways")}
-                //onValueChange={(value) => console.log(value)}
                 items={[
                   { label: "0", value: 0, color: "green" },
                   { label: "1", value: 1, color: "green" },
@@ -397,24 +354,10 @@ const styles = StyleSheet.create({
     height: 30,
     padding: 5,
     color: "black",
-    alignItems: "center",
+
     justifyContent: "center",
-    //zIndex: 300,
+    alignItems: "stretch",
   },
-  // inputTextViewCourse: {
-  //   borderColor: "black",
-  //   borderStyle: "solid",
-  //   borderWidth: 1,
-  //   borderRadius: 5,
-  //   width: "40%",
-  //   paddingBottom: 10,
-  //   height: 40,
-  //   padding: 5,
-  //   color: "black",
-  //   fontSize: 40,
-  //   alignItems: "center",
-  //   alignItems: "stretch",
-  // },
   inputTextViewGIR: {
     borderColor: "green",
     borderStyle: "solid",
@@ -433,6 +376,9 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 2,
     borderRadius: 10,
+    alignItems: "stretch",
+    justifyContent: "center",
+    alignContent: "stretch",
   },
   loginBtn: {
     width: "80%",

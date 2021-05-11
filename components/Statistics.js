@@ -1,21 +1,15 @@
 import "react-native-gesture-handler";
 import React, { Component, useEffect, useState } from "react";
 import {
-  Button,
   ActivityIndicator,
   StyleSheet,
   Text,
   View,
   SafeAreaView,
-  Image,
-  Platform,
-  TextInput,
-  TouchableOpacity,
-  Alert,
 } from "react-native";
 import firebase from "firebase";
 
-//globabl variables for calculating scoring average
+//global variables for calculating scoring average
 var count = 0;
 var totalPar = 0;
 var totalScore = 0;
@@ -30,10 +24,13 @@ function Stats() {
 
   //retrieving data from firestore
   useEffect(() => {
+    //updating global variables to calculate relevant data later in hook
     totalPar = 0;
     totalScore = 0;
     averageScore = 0;
     count = 0;
+
+    //getting the data from firestore and push to users array
     const subscriber = dbRef
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
@@ -51,9 +48,11 @@ function Stats() {
           });
         });
 
+        //calculating average score
         averageScore = totalScore - totalPar;
         averageScore /= count;
 
+        //Condition statement for adding +/- on scoring average
         if (averageScore > 0) {
           averageScore = Math.round(Math.abs(averageScore));
           scoreMsg = `+${averageScore}`;
@@ -61,10 +60,8 @@ function Stats() {
           averageScore = Math.round(Math.abs(averageScore));
           scoreMsg = `-${averageScore}`;
         } else {
-          scoreMsg = "Even par;";
+          scoreMsg = "Even";
         }
-
-        console.log(totalPar);
         setUsers(users);
         setLoading(false);
       });
@@ -83,9 +80,6 @@ function Stats() {
         <Text style={styles.textHeading}>Total Rounds </Text>
         <Text style={styles.textLabel}>{count}</Text>
       </View>
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginBtnTxt}>Club Distances</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -107,7 +101,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    //paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   heading: {
     fontWeight: "bold",
@@ -121,7 +114,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
-    //padding: 20,
   },
   inputTextLgn: {
     height: 50,
@@ -150,11 +142,11 @@ const styles = StyleSheet.create({
     fontSize: 60,
     fontWeight: "bold",
     color: "green",
+    paddingRight: 10,
   },
   textHeading: {
     flex: 1,
     fontSize: 40,
-    //fontWeight: "bold",
     color: "black",
     textDecorationLine: "underline",
   },

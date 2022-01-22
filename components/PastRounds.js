@@ -8,9 +8,11 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  InteractionManager,
 } from "react-native";
 import React, { Component, useEffect, useState } from "react";
 import firebase from "../api/firebaseConfig";
+import { Ionicons } from "@expo/vector-icons";
 
 function Users() {
   const [loading, setLoading] = useState(true);
@@ -46,18 +48,33 @@ function Users() {
       data={rounds}
       renderItem={({ item }) => (
         <View style={styles.itemView}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Maps", {
-                id: item.key,
-              });
-            }}
-          >
-            <Text style={styles.textLabel}>{item.course}</Text>
-          </TouchableOpacity>
+          <View style={styles.courseView}>
+            <View style={styles.mapLink}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Maps", {
+                    id: item.key,
+                  });
+                }}
+              >
+                <Text style={styles.textLabel}>{item.course}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Maps", {
+                    id: item.key,
+                  });
+                }}
+              >
+                <Ionicons name="globe" style={styles.icons} size={30} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text style={({ justifyContent: "center" }, styles.parNum)}>
-              <Text style={{ color: "yellow" }}>{item.score}</Text>/{item.par} (
+              <Text style={{ color: "white" }}>{item.score}</Text>/{item.par} (
+              {item.score - item.par > 0 ? "+" : ""}
               {item.score - item.par})
             </Text>
           </View>
@@ -126,16 +143,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  loginBtn: {
-    width: "80%",
-    backgroundColor: "#009933",
-    borderRadius: 10,
-    height: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 30,
-  },
+  // loginBtn: {
+  //   width: "80%",
+  //   backgroundColor: "#009933",
+  //   borderRadius: 10,
+  //   height: 60,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   marginTop: 10,
+  //   marginBottom: 30,
+  // },
   loginBtnTxt: {
     fontSize: 21,
     color: "white",
@@ -148,6 +165,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemView: {
+    //flexDirection: "row"
     backgroundColor: "green",
     padding: 20,
     marginVertical: 5,
@@ -156,6 +174,23 @@ const styles = StyleSheet.create({
   },
   parNum: {
     fontSize: 45,
+  },
+  icons: {
+    //color: "#009933",
+    //marginBottom: 50,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+  },
+
+  courseView: {
+    flex: 1,
+  },
+  mapLink: {
+    flex: 1,
+    flexDirection: "row",
   },
 });
 

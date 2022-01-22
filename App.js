@@ -47,6 +47,7 @@ class App extends Component {
         </View>
       );
     }
+    //if user is not logged in, send to login navigation stack, else go to homepage
     if (!loggedIn) {
       return (
         <NavigationContainer>
@@ -74,6 +75,7 @@ class App extends Component {
                 component={Home}
                 options={{
                   title: "Home",
+                  headerLeft: null,
                   headerTintColor: "#009933",
                   headerTitleStyle: {
                     fontSize: 20,
@@ -143,6 +145,7 @@ class App extends Component {
               component={Home}
               options={{
                 title: "Home",
+                headerLeft: null,
                 headerTintColor: "#009933",
                 headerTitleStyle: {
                   fontSize: 20,

@@ -138,8 +138,13 @@ class AddRound extends Component {
                 fetchDetails={true}
                 renderDescription={(row) => row.description}
                 onPress={(data, details = null) => {
+                  let splitDesc = data.description.split(",");
+                  console.log("type: " + typeof splitDesc[0]);
+                  console.log("description: " + splitDesc[0]);
+
+                  //console.log(data.description[0]);
                   this.setState({
-                    course: data.description,
+                    course: splitDesc[0],
                     lat: details.geometry.location.lat,
                     lng: details.geometry.location.lng,
                   });
@@ -389,10 +394,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     marginBottom: 30,
+
+    shadowColor: "rgba(46, 45, 49, 0.8)",
+    shadowOpacity: 1.5,
+    elevation: 8,
+    shadowRadius: 20,
+    shadowOffset: { width: 1, height: 15 },
   },
   loginBtnTxt: {
     fontSize: 21,
-    color: "yellow",
+    color: "white",
   },
   columnView: {
     flex: 1,

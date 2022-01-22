@@ -11,6 +11,7 @@ import {
   Alert,
 } from "react-native";
 import firebase from "firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 class Login extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class Login extends Component {
     (this.state.email = ""), (this.state.password = "");
   }
 
-  signInUser() {
+  //method to sign in a user
+  signInUser = () => {
     const { fname, lname, email, password } = this.state;
     firebase
       .auth()
@@ -42,9 +44,10 @@ class Login extends Component {
         Alert.alert("Please enter the correct login details!");
         console.log("error: ", err);
       });
-  }
+  };
 
-  forgotPass() {
+  //function to send a password reset email
+  forgotPass = () => {
     this.handleSubmit();
     firebase
       .auth()
@@ -56,7 +59,7 @@ class Login extends Component {
     this.setState({
       email: "",
     });
-  }
+  };
   handleSubmit = () => {
     this.setState({
       visible: false,
@@ -82,8 +85,10 @@ class Login extends Component {
           <Dialog.Button label="Cancel" onPress={() => this.handleSubmit()} />
           <Dialog.Button label="Submit" onPress={() => this.forgotPass()} />
         </Dialog.Container>
+
         <Text style={styles.heading}>Golf Buddy</Text>
         <View style={styles.inputView}>
+          <Ionicons name="ios-mail-sharp" style={styles.icons} size={20} />
           <TextInput
             style={styles.inputTextLgn}
             placeholder="Email..."
@@ -93,6 +98,7 @@ class Login extends Component {
           />
         </View>
         <View style={styles.inputView}>
+          <Ionicons name="ios-lock-closed" style={styles.icons} size={20} />
           <TextInput
             style={styles.inputTextLgn}
             placeholder="Password..."
@@ -115,7 +121,11 @@ class Login extends Component {
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("SignUp")}
         >
-          <Text style={styles.signUpText}>Don't have an account? Sign up!</Text>
+          <View>
+            <Text style={styles.signUpText}>
+              Don't have an account? Sign up!
+            </Text>
+          </View>
         </TouchableOpacity>
       </SafeAreaView>
     );
@@ -131,11 +141,23 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontWeight: "bold",
-    fontSize: 60,
+    fontSize: 70,
     color: "#009933",
-    marginBottom: 60,
+    marginBottom: 50,
   },
+  // inputView: {
+  //   width: "80%",
+  //   borderColor: "grey",
+  //   borderStyle: "solid",
+  //   borderWidth: 1,
+  //   borderRadius: 10,
+  //   height: 50,
+  //   marginBottom: 20,
+  //   justifyContent: "center",
+  //   padding: 20,
+  // },
   inputView: {
+    flexDirection: "row",
     width: "80%",
     borderColor: "grey",
     borderStyle: "solid",
@@ -143,10 +165,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     marginBottom: 20,
+    alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    //padding: 20,
   },
   inputTextLgn: {
+    flex: 1,
     height: 50,
     color: "black",
   },
@@ -165,14 +189,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     marginBottom: 30,
+
+    shadowColor: "rgba(46, 45, 49, 0.8)",
+    shadowOpacity: 1.5,
+    elevation: 8,
+    shadowRadius: 20,
+    shadowOffset: { width: 1, height: 15 },
   },
   loginBtnTxt: {
     fontSize: 21,
     color: "white",
   },
   signUpText: {
+    color: "blue",
     marginTop: 15,
     fontSize: 15,
+  },
+  icons: {
+    color: "#009933",
+    //marginBottom: 50,
+    padding: 10,
   },
 });
 

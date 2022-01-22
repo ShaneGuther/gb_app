@@ -5,7 +5,8 @@ import { StyleSheet, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import firebase from "firebase";
 
 class Home extends React.Component {
-  signOutUser() {
+  //method to sign out the current user
+  signOutUser = () => {
     firebase
       .auth()
       .signOut()
@@ -15,7 +16,7 @@ class Home extends React.Component {
       .catch((err) => {
         console.log("error: ", err);
       });
-  }
+  };
 
   render() {
     return (
@@ -25,13 +26,13 @@ class Home extends React.Component {
           style={styles.loginBtn}
           onPress={() => this.props.navigation.navigate("PastRounds")}
         >
-          <Text style={styles.loginBtnTxt}>View Past Rounds</Text>
+          <Text style={styles.loginBtnTxt}>Past Rounds</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => this.props.navigation.navigate("AddRound")}
         >
-          <Text style={styles.loginBtnTxt}>Add New Round</Text>
+          <Text style={styles.loginBtnTxt}>Add Round</Text>
         </TouchableOpacity>
         <Text style={styles.areaTitles}>Profile</Text>
         <TouchableOpacity
@@ -68,10 +69,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     marginBottom: 30,
+
+    shadowColor: "rgba(46, 45, 49, 0.8)",
+    shadowOpacity: 1.5,
+    elevation: 8,
+    shadowRadius: 20,
+    shadowOffset: { width: 1, height: 15 },
   },
   loginBtnTxt: {
     fontSize: 21,
-    color: "yellow",
+    color: "white",
   },
   areaTitles: {
     marginTop: 20,
@@ -88,6 +95,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 150,
     marginBottom: 30,
+
+    shadowColor: "rgba(46, 45, 49, 0.8)",
+    shadowOpacity: 1.5,
+    elevation: 8,
+    shadowRadius: 20,
+    shadowOffset: { width: 1, height: 15 },
   },
 });
 

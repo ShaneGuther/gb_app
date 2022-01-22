@@ -11,13 +11,16 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import firebase from "firebase";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fname: "",
-      lname: "",
+      //fname: "",
+      //lname: "",
+      username: "",
       email: "",
       password: "",
     };
@@ -26,7 +29,7 @@ class SignUp extends Component {
   }
 
   signUpUser() {
-    const { fname, lname, email, password } = this.state;
+    const { username, email, password } = this.state;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -36,8 +39,7 @@ class SignUp extends Component {
           .collection("users")
           .doc(firebase.auth().currentUser.uid)
           .set({
-            fname,
-            lname,
+            username,
             email,
           });
         this.props.navigation.navigate("Home");
@@ -54,19 +56,20 @@ class SignUp extends Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView style={styles.container} behavior="padding">
-        <View style={styles.columnView}>
-          <Text style={styles.heading}>Golf Buddy</Text>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.inputTextLgn}
-              placeholder="First Name..."
-              value={this.state.fname}
-              placeholderTextColor="#003f5c"
-              onChangeText={(fname) => this.setState({ fname })}
-            />
-          </View>
-          <View style={styles.inputView}>
+      // <KeyboardAwareScrollView style={styles.container} behavior="padding">
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.heading}>Golf Buddy</Text>
+        <View style={styles.inputView}>
+          <Ionicons name="ios-person-sharp" style={styles.icons} size={20} />
+          <TextInput
+            style={styles.inputTextLgn}
+            placeholder="Username..."
+            value={this.state.username}
+            placeholderTextColor="#003f5c"
+            onChangeText={(username) => this.setState({ username })}
+          />
+        </View>
+        {/* <View style={styles.inputView}>
             <TextInput
               style={styles.inputTextLgn}
               placeholder="Last Name"
@@ -74,37 +77,38 @@ class SignUp extends Component {
               placeholderTextColor="#003f5c"
               onChangeText={(lname) => this.setState({ lname })}
             />
-          </View>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.inputTextLgn}
-              placeholder="Email..."
-              placeholderTextColor="#003f5c"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-              value={this.state.email}
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </View>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.inputTextLgn}
-              placeholder="Password..."
-              placeholderTextColor="#003f5c"
-              textContentType="password"
-              value={this.state.password}
-              secureTextEntry={true}
-              onChangeText={(password) => this.setState({ password })}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.loginBtn}
-            onPress={() => this.signUpUser()}
-          >
-            <Text style={styles.loginBtnTxt}>Sign Up!</Text>
-          </TouchableOpacity>
+          </View> */}
+        <View style={styles.inputView}>
+          <Ionicons name="ios-mail-sharp" style={styles.icons} size={20} />
+          <TextInput
+            style={styles.inputTextLgn}
+            placeholder="Email..."
+            placeholderTextColor="#003f5c"
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            value={this.state.email}
+            onChangeText={(email) => this.setState({ email })}
+          />
         </View>
-      </KeyboardAwareScrollView>
+        <View style={styles.inputView}>
+          <Ionicons name="ios-lock-closed" style={styles.icons} size={20} />
+          <TextInput
+            style={styles.inputTextLgn}
+            placeholder="Password..."
+            placeholderTextColor="#003f5c"
+            textContentType="password"
+            value={this.state.password}
+            secureTextEntry={true}
+            onChangeText={(password) => this.setState({ password })}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={() => this.signUpUser()}
+        >
+          <Text style={styles.loginBtnTxt}>Sign Up!</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
     );
   }
 }
@@ -112,6 +116,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
   },
   heading: {
     fontWeight: "bold",
@@ -121,29 +127,43 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
   },
+  // inputView: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   width: "80%",
+  //   borderColor: "grey",
+  //   borderStyle: "solid",
+  //   color: "green",
+  //   borderWidth: 1,
+  //   borderRadius: 10,
+  //   height: 50,
+  //   marginBottom: 20,
+  //   justifyContent: "space-between",
+  //   padding: 20,
+  //   flex: 1,
+  //   marginLeft: "auto",
+  //   marginRight: "auto",
+  // },
   inputView: {
     flexDirection: "row",
-    alignItems: "center",
     width: "80%",
     borderColor: "grey",
     borderStyle: "solid",
-    color: "green",
     borderWidth: 1,
     borderRadius: 10,
     height: 50,
     marginBottom: 20,
-    justifyContent: "space-between",
-    padding: 20,
-    flex: 1,
-    marginLeft: "auto",
-    marginRight: "auto",
+    alignItems: "center",
+    justifyContent: "center",
+    //padding: 20,
   },
   inputTextLgn: {
+    flex: 1,
     height: 50,
-    width: "80%",
+    //width: "80%",
     color: "green",
-    justifyContent: "center",
-    alignItems: "center",
+    //justifyContent: "center",
+    //alignItems: "center",
   },
   inputTextAdd: {},
   forgot: {
@@ -171,9 +191,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 15,
   },
-  columnView: {
-    flex: 1,
-    flexDirection: "column",
+  // columnView: {
+  //   flex: 1,
+  //   flexDirection: "column",
+  // },
+  icons: {
+    color: "#009933",
+    //marginBottom: 50,
+    padding: 10,
   },
 });
 

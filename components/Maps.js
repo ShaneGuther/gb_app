@@ -57,7 +57,12 @@ class Maps extends Component {
               latitude: Number(this.state.lat),
               longitude: Number(this.state.lng),
             }}
+            image={require("../assets/golfmapmarker.png")}
+            width={28}
+            height={28}
             title={this.state.course}
+            description={"Desc"}
+            pinColor={"green"}
           />
         </MapView>
       </View>

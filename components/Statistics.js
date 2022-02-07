@@ -1,13 +1,8 @@
 import "react-native-gesture-handler";
 import React, { Component, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-} from "react-native";
+import { ActivityIndicator, Text, View, SafeAreaView } from "react-native";
 import firebase from "firebase";
+import styles from "./componentStyles/statisticsStyle";
 
 //global variables for calculating scoring average
 var count = 0;
@@ -75,10 +70,10 @@ function Stats() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputView}>
-        <Text style={styles.textHeading}>Average </Text>
-        <Text style={styles.textLabel}>{scoreMsg}</Text>
-        <Text style={styles.textHeading}>Total Rounds </Text>
-        <Text style={styles.textLabel}>{count}</Text>
+        <Text style={styles.heading}>Average </Text>
+        <Text style={styles.stats}>{scoreMsg}</Text>
+        <Text style={styles.heading}>Total Rounds </Text>
+        <Text style={styles.stats}>{count}</Text>
       </View>
     </SafeAreaView>
   );
@@ -94,62 +89,5 @@ class Statistics extends Component {
     return <Stats />;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  heading: {
-    fontWeight: "bold",
-    fontSize: 60,
-    color: "#009933",
-    marginBottom: 60,
-  },
-  inputView: {
-    width: "100%",
-    height: "50%",
-    marginBottom: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputTextLgn: {
-    height: 50,
-    color: "black",
-  },
-  loginBtn: {
-    width: "80%",
-    backgroundColor: "#009933",
-    borderRadius: 10,
-    height: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 30,
-  },
-  loginBtnTxt: {
-    fontSize: 21,
-    color: "yellow",
-  },
-  signUpText: {
-    marginTop: 15,
-    fontSize: 15,
-  },
-  textLabel: {
-    flex: 1,
-    fontSize: 60,
-    fontWeight: "bold",
-    color: "green",
-    paddingRight: 10,
-  },
-  textHeading: {
-    flex: 1,
-    fontSize: 40,
-    color: "black",
-    textDecorationLine: "underline",
-  },
-});
 
 export default Statistics;

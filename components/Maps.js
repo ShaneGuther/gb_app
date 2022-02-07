@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { View } from "react-native";
 import { StyleSheet } from "react-native";
 import firebase from "../api/firebaseConfig";
-
+import styles from "./componentStyles/mapStyle";
 class Maps extends Component {
   constructor() {
     super();
@@ -69,15 +69,5 @@ class Maps extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});
 
 export default Maps;

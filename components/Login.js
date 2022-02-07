@@ -2,7 +2,6 @@ import "react-native-gesture-handler";
 import React, { Component } from "react";
 import Dialog from "react-native-dialog";
 import {
-  StyleSheet,
   Text,
   View,
   SafeAreaView,
@@ -12,6 +11,7 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
+import styles from "./componentStyles/loginStyle";
 
 class Login extends Component {
   constructor(props) {
@@ -86,7 +86,7 @@ class Login extends Component {
           <Dialog.Button label="Submit" onPress={() => this.forgotPass()} />
         </Dialog.Container>
 
-        <Text style={styles.heading}>Golf Buddy</Text>
+        <Text style={styles.title}>Golf Buddy</Text>
         <View style={styles.inputView}>
           <Ionicons name="ios-mail-sharp" style={styles.icons} size={20} />
           <TextInput
@@ -110,19 +110,19 @@ class Login extends Component {
           />
         </View>
         <TouchableOpacity onPress={() => this.showPrompt()}>
-          <Text style={styles.forgot}>Forgot Password?</Text>
+          <Text style={styles.forgotLink}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.loginBtn}
+          style={styles.btnStyle}
           onPress={() => this.signInUser()}
         >
-          <Text style={styles.loginBtnTxt}>LOGIN</Text>
+          <Text style={styles.btnTxt}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("SignUp")}
         >
           <View>
-            <Text style={styles.signUpText}>
+            <Text style={styles.signUpLink}>
               Don't have an account? Sign up!
             </Text>
           </View>
@@ -131,85 +131,5 @@ class Login extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  heading: {
-    fontWeight: "bold",
-    fontSize: 70,
-    color: "#009933",
-    marginBottom: 50,
-  },
-  // inputView: {
-  //   width: "80%",
-  //   borderColor: "grey",
-  //   borderStyle: "solid",
-  //   borderWidth: 1,
-  //   borderRadius: 10,
-  //   height: 50,
-  //   marginBottom: 20,
-  //   justifyContent: "center",
-  //   padding: 20,
-  // },
-  inputView: {
-    flexDirection: "row",
-    width: "80%",
-    borderColor: "grey",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 50,
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    //padding: 20,
-  },
-  inputTextLgn: {
-    flex: 1,
-    height: 50,
-    color: "black",
-  },
-  inputTextAdd: {},
-  forgot: {
-    color: "black",
-    fontSize: 15,
-    margin: 20,
-  },
-  loginBtn: {
-    width: "80%",
-    backgroundColor: "#009933",
-    borderRadius: 10,
-    height: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 30,
-
-    shadowColor: "rgba(46, 45, 49, 0.8)",
-    shadowOpacity: 1.5,
-    elevation: 8,
-    shadowRadius: 20,
-    shadowOffset: { width: 1, height: 15 },
-  },
-  loginBtnTxt: {
-    fontSize: 21,
-    color: "white",
-  },
-  signUpText: {
-    color: "blue",
-    marginTop: 15,
-    fontSize: 15,
-  },
-  icons: {
-    color: "#009933",
-    //marginBottom: 50,
-    padding: 10,
-  },
-});
 
 export default Login;

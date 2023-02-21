@@ -1,8 +1,8 @@
 import "react-native-gesture-handler";
 import React, { Component } from "react";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import Marker from "react-native-maps";
 import { View } from "react-native";
-import { StyleSheet } from "react-native";
 import firebase from "../api/firebaseConfig";
 import styles from "./componentStyles/mapStyle";
 class Maps extends Component {
@@ -52,17 +52,17 @@ class Maps extends Component {
             longitudeDelta: 0.2321,
           }}
         >
-          <MapView.Marker
+          <Marker
             coordinate={{
               latitude: Number(this.state.lat),
               longitude: Number(this.state.lng),
             }}
-            image={require("../assets/golfmapmarker.png")}
-            width={28}
-            height={28}
-            title={this.state.course}
+            opacity={0.9}
+            width={58}
+            height={58}
+            title={"Testtt"}
             description={"Desc"}
-            pinColor={"green"}
+            pinColor={"red"}
           />
         </MapView>
       </View>

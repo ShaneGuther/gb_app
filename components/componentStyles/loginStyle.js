@@ -10,7 +10,7 @@ const loginStyles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 70,
-    color: "red",
+    color: "#009933",
     marginBottom: 50,
   },
   inputView: {

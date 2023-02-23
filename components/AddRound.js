@@ -200,7 +200,7 @@ class AddRound extends Component {
           </View>
 
           <View style={styles.inputView}>
-            <Text style={styles.textLabel}>Greens in Reg.*</Text>
+            <Text style={styles.textLabel}>GIR*</Text>
             <View style={styles.inputTextView}>
               <RNPickerSelect
                 style={styles.pickerStyle}
@@ -218,7 +218,7 @@ class AddRound extends Component {
           </View>
         </View>
         <View style={styles.inputView}>
-          <Text style={styles.textLabel}>Fairways Hit*</Text>
+          <Text style={styles.textLabel}>Fairways*</Text>
           <View style={styles.inputTextView}>
             <RNPickerSelect
               style={styles.pickerStyle}

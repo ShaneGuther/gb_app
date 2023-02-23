@@ -13,6 +13,7 @@ import {
 import React, { Component, useEffect, useState } from "react";
 import firebase from "../api/firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import styles from "./componentStyles/pastRoundStyle";
 
 function Users() {
@@ -49,8 +50,8 @@ function Users() {
       data={rounds}
       renderItem={({ item }) => (
         <View style={styles.itemView}>
-          <View style={styles.courseView}>
-            <View style={styles.mapLink}>
+          <View style={styles.col1}>
+            <View style={styles.courseView}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("Maps", {
@@ -60,45 +61,56 @@ function Users() {
               >
                 <Text style={styles.courseLabel}>{item.course}</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Maps", {
-                    id: item.key,
-                  });
-                }}
-              >
-                <Ionicons name="globe" style={styles.icons} size={30} />
-              </TouchableOpacity>
             </View>
-          </View>
 
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text style={({ justifyContent: "center" }, styles.parNum)}>
-              <Text style={{ color: "white" }}>{item.score}</Text>/{item.par} (
-              {item.score - item.par > 0 ? "+" : ""}
-              {item.score - item.par})
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text style={({ justifyContent: "center" }, styles.parNum)}>
+                <Text style={{ color: "white" }}>{item.score}</Text>/{item.par}{" "}
+                ({item.score - item.par > 0 ? "+" : ""}
+                {item.score - item.par})
+              </Text>
+            </View>
+            <Text style={styles.textLabels}>
+              GIR:{" "}
+              <Text style={{ color: "black" }}>
+                {item.gir}/{item.greens}
+              </Text>
             </Text>
-          </View>
-          <Text style={{ color: "white", fontSize: 30 }}>
-            GIR:{" "}
-            <Text style={{ color: "black" }}>
-              {item.gir}/{item.greens}
+            <Text style={styles.textLabels}>
+              FWH:{" "}
+              <Text style={{ color: "black" }}>
+                {item.fwh}/{item.fairways}
+              </Text>
             </Text>
-          </Text>
-          <Text style={{ color: "white", fontSize: 30 }}>
-            FWH:{" "}
-            <Text style={{ color: "black" }}>
-              {item.fwh}/{item.fairways}
-            </Text>
-          </Text>
-          <Text style={{ color: "white", fontSize: 30 }}>
-            {/* TO DO:
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textLabels}>
+                {/* TO DO:
                   3 icons at the bottom instead of notes
                   Note icon - globe icon - delete icon
                   maybe change placement
             */}
-            Notes: <Text style={{ color: "black" }}>{item.weather}</Text>
-          </Text>
+                Notes: <Text style={{ color: "black" }}>{item.weather}</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.col2}>
+            <TouchableOpacity
+              style={styles.iconsTr}
+              onPress={() => {
+                navigation.navigate("Maps", {
+                  id: item.key,
+                });
+              }}
+            >
+              <Ionicons name="globe" style={styles.icons} size={30} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconsTr} onPress={() => {}}>
+              <Ionicons name="trash" style={styles.trashIcon} size={30} />
+            </TouchableOpacity>
+            <View style={styles.starCon}>
+              <AntDesign name="star" size={30} style={styles.starIcon} />
+            </View>
+          </View>
         </View>
       )}
     />

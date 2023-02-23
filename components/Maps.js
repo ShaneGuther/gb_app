@@ -58,11 +58,10 @@ class Maps extends Component {
               longitude: Number(this.state.lng),
             }}
             opacity={0.9}
-            width={58}
-            height={58}
-            title={"Testtt"}
-            description={"Desc"}
+            width={28}
+            height={28}
             pinColor={"red"}
+            style={styles.map}
           />
         </MapView>
       </View>

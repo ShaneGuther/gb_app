@@ -6,37 +6,46 @@ const pastRoundStyles = StyleSheet.create({
     backgroundColor: "white",
   },
   courseLabel: {
-    flex: 1,
-    fontSize: 20,
+    fontSize: 27,
     fontWeight: "bold",
-    color: "white",
+    color: "Black",
   },
-
   itemView: {
-    //flexDirection: "row"
+    flexDirection: "row",
     backgroundColor: "green",
     padding: 20,
-    marginVertical: 5,
+    marginVertical: 3,
     marginHorizontal: 10,
     borderRadius: 20,
   },
   parNum: {
     fontSize: 45,
   },
-
-  icons: {
-    //color: "#009933",
-    //marginBottom: 50,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-  },
-
-  mapLink: {
-    flex: 1,
+  textLabels: {
     flexDirection: "row",
+    color: "white",
+    fontSize: 22,
+  },
+  trashIcon: {
+    color: "#8a1c1c",
+    paddingTop: 10,
+  },
+  // mapLink: {
+  //   flex: 1,
+  //   flexDirection: "row",
+  // },
+  col1: {
+    width: "90%",
+  },
+  col2: {
+    width: "10%",
+  },
+  starCon: {
+    position: "absolute",
+    bottom: 0,
+  },
+  starIcon: {
+    color: "#dbc956",
   },
 });
 

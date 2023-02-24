@@ -2,13 +2,11 @@ import "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import {
   FlatList,
-  StyleSheet,
   Text,
   View,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
-  InteractionManager,
   Alert,
 } from "react-native";
 import React, { Component, useEffect, useState, useCallback } from "react";
@@ -17,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./componentStyles/pastRoundStyle";
 
-function Users() {
+function Rounds() {
   const [loading, setLoading] = useState(true);
   const [rounds, setRounds] = useState([]);
   var [score, setScore] = useState(0);
@@ -25,7 +23,7 @@ function Users() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const subscriber = dbRef
+    dbRef
       .collection("users")
       .doc(firebase.auth().currentUser.uid)
       .collection("rounds")
@@ -51,22 +49,35 @@ function Users() {
       });
   }, []);
 
-  const onClick = useCallback((a, b) => {
+  const onClick = useCallback((id) => {
     Alert.alert(
       "Delete round?",
-      "You are about to delete your round, this cannot be reversed.",
+      "You are about to delete a round, this cannot be reversed.",
       [
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        { text: "Delete", onPress: () => deleteRound(id) },
       ]
     );
   }, []);
 
-  const deleteRound = useCallback((a, b) => {}, []);
+  const deleteRound = useCallback((id) => {
+    dbRef
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("rounds")
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Round successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  }, []);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -111,11 +122,6 @@ function Users() {
             </Text>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textLabels}>
-                {/* TO DO:
-                  3 icons at the bottom instead of notes
-                  Note icon - globe icon - delete icon
-                  maybe change placement
-            */}
                 Notes: <Text style={{ color: "black" }}>{item.weather}</Text>
               </Text>
             </View>
@@ -134,7 +140,7 @@ function Users() {
             <TouchableOpacity
               style={styles.iconsTr}
               onPress={() => {
-                onClick();
+                onClick(item.key);
               }}
             >
               <Ionicons name="trash" style={styles.trashIcon} size={30} />
@@ -167,7 +173,7 @@ class PastRounds extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Users />
+        <Rounds />
       </SafeAreaView>
     );
   }

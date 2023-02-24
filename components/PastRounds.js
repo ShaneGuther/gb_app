@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   InteractionManager,
+  Alert,
 } from "react-native";
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState, useCallback } from "react";
 import firebase from "../api/firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -19,6 +20,7 @@ import styles from "./componentStyles/pastRoundStyle";
 function Users() {
   const [loading, setLoading] = useState(true);
   const [rounds, setRounds] = useState([]);
+  var [score, setScore] = useState(0);
   const dbRef = firebase.firestore();
   const navigation = useNavigation();
 
@@ -29,17 +31,42 @@ function Users() {
       .collection("rounds")
       .onSnapshot((querySnapshot) => {
         const rounds = [];
+        let lowestScore = -Infinity;
         querySnapshot.forEach((documentSnapshot) => {
+          const tempScore =
+            documentSnapshot.data().par - documentSnapshot.data().score;
+          console.log("Temp score = " + tempScore);
+          if (tempScore > lowestScore) {
+            lowestScore = tempScore;
+          }
           rounds.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
+        setScore(lowestScore);
+        console.log("Lowest score = " + lowestScore);
         setRounds(rounds);
         setLoading(false);
       });
-    return () => subscriber();
   }, []);
+
+  const onClick = useCallback((a, b) => {
+    Alert.alert(
+      "Delete round?",
+      "You are about to delete your round, this cannot be reversed.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]
+    );
+  }, []);
+
+  const deleteRound = useCallback((a, b) => {}, []);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -104,11 +131,22 @@ function Users() {
             >
               <Ionicons name="globe" style={styles.icons} size={30} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconsTr} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.iconsTr}
+              onPress={() => {
+                onClick();
+              }}
+            >
               <Ionicons name="trash" style={styles.trashIcon} size={30} />
             </TouchableOpacity>
             <View style={styles.starCon}>
-              <AntDesign name="star" size={30} style={styles.starIcon} />
+              {console.log(" item score " + (item.scor - item.par))}
+              {console.log(" best score " + score)}
+              {item.par - item.score == score ? (
+                <AntDesign name="star" size={30} style={styles.starIcon} />
+              ) : (
+                <></>
+              )}
             </View>
           </View>
         </View>

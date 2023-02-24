@@ -13,7 +13,7 @@ const pastRoundStyles = StyleSheet.create({
   itemView: {
     flexDirection: "row",
     backgroundColor: "green",
-    padding: 20,
+    padding: 10,
     marginVertical: 3,
     marginHorizontal: 10,
     borderRadius: 20,
